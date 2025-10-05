@@ -10,7 +10,8 @@
     margin: 0;
     padding: 30px;
     background-color: white;
-    background-image: url('LAU Logo_Green.png');
+    /* fallback if background fails */
+    background-image: url('https://raw.githubusercontent.com/roy1sarkis99-svg/event-countdown/main/LAU_Logo_Green.png');
     background-repeat: no-repeat;
     background-position: center top;
     background-size: contain;
@@ -69,7 +70,8 @@
 </style>
 </head>
 <body>
-<img src="LAU Logo_Green.png" class="logo" alt="Logo">
+<!-- Top-left logo -->
+<img src="https://raw.githubusercontent.com/roy1sarkis99-svg/event-countdown/main/LAU_Logo_Green.png" class="logo" alt="Logo">
 
 <h1>Upcoming Events Countdown</h1>
 <div class="container">
@@ -78,10 +80,10 @@
 </div>
 
 <script>
-const JSON_FILE = 'converted_calendar.json';
+const JSON_FILE = 'https://raw.githubusercontent.com/roy1sarkis99-svg/event-countdown/main/converted_calendar.json';
 const REM_KEY = 'countdown_reminders_v6';
-let renderedHash = null; // keep track of last JSON to avoid re-rendering unnecessarily
-let tickIntervals = [];   // store interval ids for clearing when re-rendering
+let renderedHash = null;
+let tickIntervals = [];
 
 if ('Notification' in window && Notification.permission === 'default') {
     Notification.requestPermission();
@@ -200,22 +202,18 @@ async function fetchAndMaybeRender() {
         if (!res.ok) throw new Error('Fetch failed: ' + res.status);
         const text = await res.text();
         const hash = text.slice(0, 200);
-        if (renderedHash === hash) {
-            return;
-        }
+        if (renderedHash === hash) return;
         renderedHash = hash;
         const events = JSON.parse(text);
         renderEvents(events);
     } catch (err) {
         console.error('Error loading JSON:', err);
         const dlList = document.getElementById('dl-list');
-        dlList.innerHTML = `<div style="color:red;">Failed to load JSON. Make sure <code>${JSON_FILE}</code> exists in the same folder (or is reachable).<br>${err.message}</div>`;
+        dlList.innerHTML = `<div style="color:red;">Failed to load JSON. Make sure <code>${JSON_FILE}</code> exists in the repo.<br>${err.message}</div>`;
     }
 }
 
 fetchAndMaybeRender();
-
-// Poll every 5 minutes (300000 ms)
 setInterval(fetchAndMaybeRender, 300000);
 </script>
 </body>
