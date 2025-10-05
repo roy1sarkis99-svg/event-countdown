@@ -18,12 +18,15 @@
   }
 
   .filters {
-    text-align: center;
-    margin: 15px 0;
-    flex-wrap: wrap;
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     gap: 5px;
+    position: sticky;
+    top: 0;
+    background: white;
+    padding: 10px 0;
+    z-index: 100;
   }
 
   .filters button {
@@ -42,16 +45,14 @@
   }
 
   .container {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
   }
 
-  .left, .right {
-    width: 48%;
+  .column {
     display: flex;
     flex-direction: column;
-    min-width: 300px;
   }
 
   .event {
@@ -61,6 +62,14 @@
     border-radius:6px;
     background: rgba(255,255,255,0.95);
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    opacity: 0;
+    transform: translateY(5px);
+    transition: all 0.3s ease;
+  }
+
+  .event.show {
+    opacity: 1;
+    transform: translateY(0);
   }
 
   .distance-learning {
@@ -73,21 +82,26 @@
     border-color: #0b0bb6;
   }
 
+  .event.starting-soon {
+    border-color: #e67e22;
+    box-shadow: 0 2px 6px rgba(230,126,34,0.5);
+  }
+
   .meta {font-size:0.9em; color:#555; margin-top:6px;}
   .count {font-weight:700; color:#0b6b0b; margin-top:6px;}
   small {color:#666;}
-
-  /* Mobile optimization */
-  @media screen and (max-width: 768px) {
-    .left, .right {
-      width: 100%;
-    }
-  }
 
   .no-events {
     font-style: italic;
     color: #888;
     margin: 15px 0;
+    text-align: center;
+  }
+
+  @media screen and (max-width: 768px) {
+    .container {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
 </head>
@@ -95,7 +109,7 @@
 
 <h1>Upcoming Events Countdown</h1>
 
-<div class="filters">
+<div class="filters" role="region" aria-label="Event Filters">
   <button data-filter="today" class="active">Today</button>
   <button data-filter="week">This Week</button>
   <button data-filter="month">This Month</button>
@@ -105,8 +119,8 @@
 </div>
 
 <div class="container">
-  <div class="left" id="dl-list"></div>
-  <div class="right" id="other-list"></div>
+  <div class="column" id="dl-list"></div>
+  <div class="column" id="other-list"></div>
 </div>
 
 <script>
@@ -114,7 +128,7 @@ const JSON_FILE = 'https://roy1sarkis99-svg.github.io/event-countdown/converted_
 const REM_KEY = 'countdown_reminders_v6';
 let renderedHash = null;
 let tickIntervals = [];
-let currentFilter = 'today';
+let currentFilter = localStorage.getItem('lastFilter') || 'today';
 
 if ('Notification' in window && Notification.permission === 'default') {
     Notification.requestPermission();
@@ -184,7 +198,7 @@ function renderEvents(events) {
         otherList.appendChild(noMsg.cloneNode(true));
     }
 
-    upcomingEvents.forEach(ev => {
+    upcomingEvents.forEach((ev, idx) => {
         const evText = (ev.summary || '') + ' ' + (ev.description || '');
         const isDL = /distance learning/i.test(evText);
 
@@ -213,6 +227,9 @@ function renderEvents(events) {
         if (isDL) dlList.appendChild(el);
         else otherList.appendChild(el);
 
+        // Fade-in effect
+        setTimeout(() => el.classList.add('show'), idx*50);
+
         const key20 = (ev.summary || '') + (ev.start || '') + '::20';
         const keyStart = (ev.summary || '') + (ev.start || '') + '::start';
 
@@ -222,6 +239,9 @@ function renderEvents(events) {
             const diff = startTime - now;
             const elc = document.getElementById('count-' + safeId);
             if (!elc) return;
+
+            // Highlight imminent events
+            if(diff <= 20*60*1000) el.classList.add('starting-soon');
 
             if (diff <= 0) {
                 elc.textContent = 'Starting now!';
@@ -254,6 +274,12 @@ function renderEvents(events) {
         const iid = setInterval(tick, 1000);
         tickIntervals.push(iid);
     });
+
+    // Scroll to first event
+    if(upcomingEvents.length > 0){
+        const firstEvent = document.getElementById('count-' + encodeURIComponent(upcomingEvents[0].summary + upcomingEvents[0].start));
+        firstEvent?.scrollIntoView({behavior:'smooth', block:'center'});
+    }
 }
 
 async function fetchAndRender() {
@@ -277,6 +303,7 @@ async function fetchAndRender() {
 document.querySelectorAll('.filters button').forEach(btn => {
     btn.addEventListener('click', () => {
         currentFilter = btn.getAttribute('data-filter');
+        localStorage.setItem('lastFilter', currentFilter);
         document.querySelectorAll('.filters button').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         fetchAndRender();
