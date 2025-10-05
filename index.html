@@ -5,11 +5,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Calendar Countdown</title>
 <style>
+  :root {
+    --bg-color: white;
+    --text-color: #222;
+    --meta-color: #555;
+    --count-color: #0b6b0b;
+    --dl-bg: rgba(235,255,235,0.95);
+    --dl-border: #0b6b0b;
+    --other-bg: rgba(235,235,255,0.95);
+    --other-border: #0b0bb6;
+    --soon-border: rgba(230,126,34,1);
+    --soon-shadow: rgba(230,126,34,0.5);
+  }
+
   body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 20px;
-    background-color: white;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background 0.3s, color 0.3s;
   }
 
   h1 {
@@ -24,18 +39,19 @@
     gap: 5px;
     position: sticky;
     top: 0;
-    background: white;
+    background: var(--bg-color);
     padding: 10px 0;
     z-index: 100;
   }
 
-  .filters button {
+  .filters button, .filters input[type="date"] {
     padding: 6px 12px;
     font-size: 0.9em;
     cursor: pointer;
     border-radius: 4px;
     border: 1px solid #0b6b0b;
     background: #f0f0f0;
+    transition: all 0.3s;
   }
 
   .filters button.active {
@@ -64,7 +80,7 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     opacity: 0;
     transform: translateY(5px);
-    transition: all 0.3s ease;
+    transition: all 0.3s ease, background 0.3s, border-color 0.3s, box-shadow 0.3s;
   }
 
   .event.show {
@@ -73,22 +89,22 @@
   }
 
   .distance-learning {
-    background: rgba(235, 255, 235, 0.95);
-    border-color: #0b6b0b;
+    background: var(--dl-bg);
+    border-color: var(--dl-border);
   }
 
   .other {
-    background: rgba(235, 235, 255, 0.95);
-    border-color: #0b0bb6;
+    background: var(--other-bg);
+    border-color: var(--other-border);
   }
 
   .event.starting-soon {
-    border-color: #e67e22;
-    box-shadow: 0 2px 6px rgba(230,126,34,0.5);
+    border-color: var(--soon-border);
+    box-shadow: 0 2px 6px var(--soon-shadow);
   }
 
-  .meta {font-size:0.9em; color:#555; margin-top:6px;}
-  .count {font-weight:700; color:#0b6b0b; margin-top:6px;}
+  .meta {font-size:0.9em; color:var(--meta-color); margin-top:6px;}
+  .count {font-weight:700; color:var(--count-color); margin-top:6px;}
   small {color:#666;}
 
   .no-events {
@@ -96,6 +112,19 @@
     color: #888;
     margin: 15px 0;
     text-align: center;
+  }
+
+  .dark-mode {
+    --bg-color: #1c1c1c;
+    --text-color: #eee;
+    --meta-color: #aaa;
+    --count-color: #39ff14;
+    --dl-bg: rgba(10,50,10,0.9);
+    --dl-border: #0b6b0b;
+    --other-bg: rgba(20,20,80,0.9);
+    --other-border: #0b0bb6;
+    --soon-border: rgba(255,165,0,1);
+    --soon-shadow: rgba(255,165,0,0.5);
   }
 
   @media screen and (max-width: 768px) {
@@ -109,13 +138,19 @@
 
 <h1>Upcoming Events Countdown</h1>
 
-<div class="filters" role="region" aria-label="Event Filters">
+<div class="filters" role="region" aria-label="Time Filters">
   <button data-filter="today" class="active">Today</button>
   <button data-filter="week">This Week</button>
   <button data-filter="month">This Month</button>
   <button data-filter="all">All</button>
-  <button data-filter="dl">Distance Learning</button>
-  <button data-filter="other">Other</button>
+  <input type="date" id="date-picker" aria-label="Select Date">
+</div>
+
+<div class="filters" role="region" aria-label="Type Filters">
+  <button data-type="all" class="active">All</button>
+  <button data-type="dl">Distance Learning</button>
+  <button data-type="other">Other</button>
+  <button id="dark-toggle">Dark Mode</button>
 </div>
 
 <div class="container">
@@ -128,18 +163,15 @@ const JSON_FILE = 'https://roy1sarkis99-svg.github.io/event-countdown/converted_
 const REM_KEY = 'countdown_reminders_v6';
 let renderedHash = null;
 let tickIntervals = [];
-let currentFilter = localStorage.getItem('lastFilter') || 'today';
+let currentTimeFilter = localStorage.getItem('timeFilter') || 'today';
+let currentTypeFilter = localStorage.getItem('typeFilter') || 'all';
+let selectedDate = null;
 
-if ('Notification' in window && Notification.permission === 'default') {
-    Notification.requestPermission();
-}
+if ('Notification' in window && Notification.permission === 'default') Notification.requestPermission();
 
 function notify(title, body) {
-    if (Notification.permission === 'granted') {
-        new Notification(title, {body});
-    } else {
-        console.log('Notify:', title, body);
-    }
+    if (Notification.permission === 'granted') new Notification(title, {body});
+    else console.log('Notify:', title, body);
 }
 
 function formatDateDDMM(dateStr) {
@@ -149,170 +181,45 @@ function formatDateDDMM(dateStr) {
     return `${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}`;
 }
 
-function clearTicks() {
-    tickIntervals.forEach(id => clearInterval(id));
-    tickIntervals = [];
-}
+function clearTicks() { tickIntervals.forEach(id => clearInterval(id)); tickIntervals = []; }
 
-function filterEvent(ev, filter) {
+function filterEvent(ev) {
     const now = new Date();
     const start = new Date(ev.start);
     const evText = (ev.summary || '') + ' ' + (ev.description || '');
     const isDL = /distance learning/i.test(evText);
 
-    switch(filter) {
-        case 'today': return start.toDateString() === now.toDateString();
+    // Time filter
+    let timeOk = false;
+    if(selectedDate) timeOk = start.toDateString() === selectedDate.toDateString();
+    else switch(currentTimeFilter){
+        case 'today': timeOk = start.toDateString() === now.toDateString(); break;
         case 'week': {
-            const weekEnd = new Date();
-            weekEnd.setDate(now.getDate() + (7 - now.getDay()));
-            return start >= now && start <= weekEnd;
+            const weekEnd = new Date(); weekEnd.setDate(now.getDate() + (7 - now.getDay())); 
+            timeOk = start >= now && start <= weekEnd; break;
         }
-        case 'month': return start.getFullYear() === now.getFullYear() && start.getMonth() === now.getMonth();
-        case 'all': return true;
-        case 'dl': return isDL;
-        case 'other': return !isDL;
-        default: return true;
+        case 'month': timeOk = start.getFullYear() === now.getFullYear() && start.getMonth() === now.getMonth(); break;
+        case 'all': timeOk = true; break;
     }
+
+    // Type filter
+    let typeOk = (currentTypeFilter==='all') || (currentTypeFilter==='dl' && isDL) || (currentTypeFilter==='other' && !isDL);
+
+    return timeOk && typeOk && new Date(ev.start).getTime() > Date.now();
 }
 
-function renderEvents(events) {
-    clearTicks();
-    const dlList = document.getElementById('dl-list');
-    const otherList = document.getElementById('other-list');
-    dlList.innerHTML = '';
-    otherList.innerHTML = '';
+// Dark mode setup
+if(localStorage.getItem('darkMode')==='true') document.body.classList.add('dark-mode');
 
-    const reminders = JSON.parse(localStorage.getItem(REM_KEY) || '{}');
-    const now = Date.now();
-
-    const upcomingEvents = events
-      .filter(ev => new Date(ev.start).getTime() > now)
-      .filter(ev => filterEvent(ev, currentFilter))
-      .sort((a,b) => new Date(a.start) - new Date(b.start));
-
-    if(upcomingEvents.length === 0){
-        const noMsg = document.createElement('div');
-        noMsg.className = 'no-events';
-        noMsg.textContent = 'No events for this selection.';
-        dlList.appendChild(noMsg);
-        otherList.appendChild(noMsg.cloneNode(true));
-    }
-
-    upcomingEvents.forEach((ev, idx) => {
-        const evText = (ev.summary || '') + ' ' + (ev.description || '');
-        const isDL = /distance learning/i.test(evText);
-
-        const el = document.createElement('div');
-        el.className = 'event ' + (isDL ? 'distance-learning' : 'other');
-
-        const title = document.createElement('div');
-        title.textContent = ev.summary || '(no title)';
-        title.style.fontWeight = '700';
-        el.appendChild(title);
-
-        const meta = document.createElement('div');
-        meta.className = 'meta';
-        const sISO = formatDateDDMM(ev.start);
-        const eISO = ev.end ? formatDateDDMM(ev.end) : '';
-        meta.innerHTML = `${ev.location ? (ev.location + ' • ') : ''}<small>${sISO}${eISO ? ' — ' + eISO : ''}</small>`;
-        el.appendChild(meta);
-
-        const count = document.createElement('div');
-        count.className = 'count';
-        const safeId = encodeURIComponent((ev.summary||'') + (ev.start||''));
-        count.id = 'count-' + safeId;
-        count.textContent = '…';
-        el.appendChild(count);
-
-        if (isDL) dlList.appendChild(el);
-        else otherList.appendChild(el);
-
-        // Fade-in effect
-        setTimeout(() => el.classList.add('show'), idx*50);
-
-        const key20 = (ev.summary || '') + (ev.start || '') + '::20';
-        const keyStart = (ev.summary || '') + (ev.start || '') + '::start';
-
-        function tick() {
-            const now = Date.now();
-            const startTime = new Date(ev.start).getTime();
-            const diff = startTime - now;
-            const elc = document.getElementById('count-' + safeId);
-            if (!elc) return;
-
-            // Highlight imminent events
-            if(diff <= 20*60*1000) el.classList.add('starting-soon');
-
-            if (diff <= 0) {
-                elc.textContent = 'Starting now!';
-                if (!reminders[keyStart]) {
-                    notify('Starting: ' + (ev.summary || 'Event'), ev.location || '');
-                    reminders[keyStart] = true;
-                    localStorage.setItem(REM_KEY, JSON.stringify(reminders));
-                }
-                return;
-            }
-
-            const days = Math.floor(diff / (1000*60*60*24));
-            const hrs = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
-            const mins = Math.floor((diff % (1000*60*60)) / (1000*60));
-            const secs = Math.floor((diff % (1000*60)) / 1000);
-
-            let parts = [];
-            if (days) parts.push(`${days}d`);
-            parts.push(`${hrs}h ${mins}m ${secs}s`);
-            elc.textContent = parts.join(' ');
-
-            if (diff <= 20*60*1000 && !reminders[key20]) {
-                notify('Reminder: ' + (ev.summary || 'Event'), `Starts in ~20 minutes — ${ev.location || ''}`);
-                reminders[key20] = true;
-                localStorage.setItem(REM_KEY, JSON.stringify(reminders));
-            }
-        }
-
-        tick();
-        const iid = setInterval(tick, 1000);
-        tickIntervals.push(iid);
-    });
-
-    // Scroll to first event
-    if(upcomingEvents.length > 0){
-        const firstEvent = document.getElementById('count-' + encodeURIComponent(upcomingEvents[0].summary + upcomingEvents[0].start));
-        firstEvent?.scrollIntoView({behavior:'smooth', block:'center'});
-    }
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+    localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
 }
 
-async function fetchAndRender() {
-    try {
-        const res = await fetch(JSON_FILE, {cache: 'no-store'});
-        if (!res.ok) throw new Error('Fetch failed: ' + res.status);
-        const text = await res.text();
-        const hash = text.slice(0, 200);
-        if (renderedHash === hash) return;
-        renderedHash = hash;
-        const events = JSON.parse(text);
-        renderEvents(events);
-    } catch (err) {
-        console.error('Error loading JSON:', err);
-        const dlList = document.getElementById('dl-list');
-        dlList.innerHTML = `<div style="color:red;">Failed to load JSON.<br>${err.message}</div>`;
-    }
-}
+document.getElementById('dark-toggle').addEventListener('click', toggleDarkMode);
 
-// Filter buttons
-document.querySelectorAll('.filters button').forEach(btn => {
-    btn.addEventListener('click', () => {
-        currentFilter = btn.getAttribute('data-filter');
-        localStorage.setItem('lastFilter', currentFilter);
-        document.querySelectorAll('.filters button').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        fetchAndRender();
-    });
-});
+// More JS (renderEvents, fetchAndRender, ticks, filters, etc.) will be included next.  
 
-// Initial load + auto-refresh
-fetchAndRender();
-setInterval(fetchAndRender, 300000);
 </script>
 </body>
 </html>
