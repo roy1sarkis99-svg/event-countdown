@@ -8,41 +8,50 @@
   body {
     font-family: Arial, sans-serif;
     margin: 0;
-    padding: 30px;
+    padding: 20px;
     background-color: white;
-    /* fallback if background fails */
-    background-image: url('https://raw.githubusercontent.com/roy1sarkis99-svg/event-countdown/main/LAU_Logo_Green.png');
-    background-repeat: no-repeat;
-    background-position: center top;
-    background-size: contain;
-    background-attachment: fixed;
   }
 
   h1 {
     text-align: center;
-    margin-top: 160px;
+    margin-top: 10px;
   }
 
-  .logo {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    width: 240px;
-    height: auto;
-    z-index: 10;
+  .filters {
+    text-align: center;
+    margin: 15px 0;
+    flex-wrap: wrap;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  .filters button {
+    padding: 6px 12px;
+    font-size: 0.9em;
+    cursor: pointer;
+    border-radius: 4px;
+    border: 1px solid #0b6b0b;
+    background: #f0f0f0;
+  }
+
+  .filters button.active {
+    background: #0b6b0b;
+    color: white;
+    border-color: #0b6b0b;
   }
 
   .container {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    margin-top: 20px;
   }
 
   .left, .right {
     width: 48%;
     display: flex;
     flex-direction: column;
+    min-width: 300px;
   }
 
   .event {
@@ -67,23 +76,45 @@
   .meta {font-size:0.9em; color:#555; margin-top:6px;}
   .count {font-weight:700; color:#0b6b0b; margin-top:6px;}
   small {color:#666;}
+
+  /* Mobile optimization */
+  @media screen and (max-width: 768px) {
+    .left, .right {
+      width: 100%;
+    }
+  }
+
+  .no-events {
+    font-style: italic;
+    color: #888;
+    margin: 15px 0;
+  }
 </style>
 </head>
 <body>
-<!-- Top-left logo -->
-<img src="https://raw.githubusercontent.com/roy1sarkis99-svg/event-countdown/main/LAU_Logo_Green.png" class="logo" alt="Logo">
 
 <h1>Upcoming Events Countdown</h1>
+
+<div class="filters">
+  <button data-filter="today" class="active">Today</button>
+  <button data-filter="week">This Week</button>
+  <button data-filter="month">This Month</button>
+  <button data-filter="all">All</button>
+  <button data-filter="dl">Distance Learning</button>
+  <button data-filter="other">Other</button>
+</div>
+
 <div class="container">
   <div class="left" id="dl-list"></div>
   <div class="right" id="other-list"></div>
 </div>
 
 <script>
-const JSON_FILE = 'https://raw.githubusercontent.com/roy1sarkis99-svg/event-countdown/main/converted_calendar.json';
+const JSON_FILE = 'https://roy1sarkis99-svg.github.io/event-countdown/converted_calendar.json';
 const REM_KEY = 'countdown_reminders_v6';
 let renderedHash = null;
 let tickIntervals = [];
+let currentFilter = 'today';
 
 if ('Notification' in window && Notification.permission === 'default') {
     Notification.requestPermission();
@@ -109,9 +140,29 @@ function clearTicks() {
     tickIntervals = [];
 }
 
+function filterEvent(ev, filter) {
+    const now = new Date();
+    const start = new Date(ev.start);
+    const evText = (ev.summary || '') + ' ' + (ev.description || '');
+    const isDL = /distance learning/i.test(evText);
+
+    switch(filter) {
+        case 'today': return start.toDateString() === now.toDateString();
+        case 'week': {
+            const weekEnd = new Date();
+            weekEnd.setDate(now.getDate() + (7 - now.getDay()));
+            return start >= now && start <= weekEnd;
+        }
+        case 'month': return start.getFullYear() === now.getFullYear() && start.getMonth() === now.getMonth();
+        case 'all': return true;
+        case 'dl': return isDL;
+        case 'other': return !isDL;
+        default: return true;
+    }
+}
+
 function renderEvents(events) {
     clearTicks();
-
     const dlList = document.getElementById('dl-list');
     const otherList = document.getElementById('other-list');
     dlList.innerHTML = '';
@@ -122,7 +173,16 @@ function renderEvents(events) {
 
     const upcomingEvents = events
       .filter(ev => new Date(ev.start).getTime() > now)
+      .filter(ev => filterEvent(ev, currentFilter))
       .sort((a,b) => new Date(a.start) - new Date(b.start));
+
+    if(upcomingEvents.length === 0){
+        const noMsg = document.createElement('div');
+        noMsg.className = 'no-events';
+        noMsg.textContent = 'No events for this selection.';
+        dlList.appendChild(noMsg);
+        otherList.appendChild(noMsg.cloneNode(true));
+    }
 
     upcomingEvents.forEach(ev => {
         const evText = (ev.summary || '') + ' ' + (ev.description || '');
@@ -196,7 +256,7 @@ function renderEvents(events) {
     });
 }
 
-async function fetchAndMaybeRender() {
+async function fetchAndRender() {
     try {
         const res = await fetch(JSON_FILE, {cache: 'no-store'});
         if (!res.ok) throw new Error('Fetch failed: ' + res.status);
@@ -209,12 +269,23 @@ async function fetchAndMaybeRender() {
     } catch (err) {
         console.error('Error loading JSON:', err);
         const dlList = document.getElementById('dl-list');
-        dlList.innerHTML = `<div style="color:red;">Failed to load JSON. Make sure <code>${JSON_FILE}</code> exists in the repo.<br>${err.message}</div>`;
+        dlList.innerHTML = `<div style="color:red;">Failed to load JSON.<br>${err.message}</div>`;
     }
 }
 
-fetchAndMaybeRender();
-setInterval(fetchAndMaybeRender, 300000);
+// Filter buttons
+document.querySelectorAll('.filters button').forEach(btn => {
+    btn.addEventListener('click', () => {
+        currentFilter = btn.getAttribute('data-filter');
+        document.querySelectorAll('.filters button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        fetchAndRender();
+    });
+});
+
+// Initial load + auto-refresh
+fetchAndRender();
+setInterval(fetchAndRender, 300000);
 </script>
 </body>
 </html>
