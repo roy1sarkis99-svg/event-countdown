@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calendar Countdown</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 30px;
+    background-color: white;
+    background-image: url('LAU Logo_Green.png');
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: contain;
+    background-attachment: fixed;
+  }
+
+  h1 {
+    text-align: center;
+    margin-top: 160px;
+  }
+
+  .logo {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 240px;
+    height: auto;
+    z-index: 10;
+  }
+
+  .container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+
+  .left, .right {
+    width: 48%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .event {
+    border:1px solid #ccc;
+    padding:12px;
+    margin:10px 0;
+    border-radius:6px;
+    background: rgba(255,255,255,0.95);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .distance-learning {
+    background: rgba(235, 255, 235, 0.95);
+    border-color: #0b6b0b;
+  }
+
+  .other {
+    background: rgba(235, 235, 255, 0.95);
+    border-color: #0b0bb6;
+  }
+
+  .meta {font-size:0.9em; color:#555; margin-top:6px;}
+  .count {font-weight:700; color:#0b6b0b; margin-top:6px;}
+  small {color:#666;}
+</style>
+</head>
+<body>
+<img src="LAU Logo_Green.png" class="logo" alt="Logo">
+
+<h1>Upcoming Events Countdown</h1>
+<div class="container">
+  <div class="left" id="dl-list"></div>
+  <div class="right" id="other-list"></div>
+</div>
+
+<script>
+const JSON_FILE = 'converted_calendar.json';
+const REM_KEY = 'countdown_reminders_v6';
+let renderedHash = null; // keep track of last JSON to avoid re-rendering unnecessarily
+let tickIntervals = [];   // store interval ids for clearing when re-rendering
+
+if ('Notification' in window && Notification.permission === 'default') {
+    Notification.requestPermission();
+}
+
+function notify(title, body) {
+    if (Notification.permission === 'granted') {
+        new Notification(title, {body});
+    } else {
+        console.log('Notify:', title, body);
+    }
+}
+
+function formatDateDDMM(dateStr) {
+    if (!dateStr) return '';
+    const d = new Date(dateStr);
+    const p = n => n.toString().padStart(2,'0');
+    return `${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}`;
+}
+
+function clearTicks() {
+    tickIntervals.forEach(id => clearInterval(id));
+    tickIntervals = [];
+}
+
+function renderEvents(events) {
+    clearTicks();
+
+    const dlList = document.getElementById('dl-list');
+    const otherList = document.getElementById('other-list');
+    dlList.innerHTML = '';
+    otherList.innerHTML = '';
+
+    const reminders = JSON.parse(localStorage.getItem(REM_KEY) || '{}');
+    const now = Date.now();
+
+    const upcomingEvents = events
+      .filter(ev => new Date(ev.start).getTime() > now)
+      .sort((a,b) => new Date(a.start) - new Date(b.start));
+
+    upcomingEvents.forEach(ev => {
+        const evText = (ev.summary || '') + ' ' + (ev.description || '');
+        const isDL = /distance learning/i.test(evText);
+
+        const el = document.createElement('div');
+        el.className = 'event ' + (isDL ? 'distance-learning' : 'other');
+
+        const title = document.createElement('div');
+        title.textContent = ev.summary || '(no title)';
+        title.style.fontWeight = '700';
+        el.appendChild(title);
+
+        const meta = document.createElement('div');
+        meta.className = 'meta';
+        const sISO = formatDateDDMM(ev.start);
+        const eISO = ev.end ? formatDateDDMM(ev.end) : '';
+        meta.innerHTML = `${ev.location ? (ev.location + ' • ') : ''}<small>${sISO}${eISO ? ' — ' + eISO : ''}</small>`;
+        el.appendChild(meta);
+
+        const count = document.createElement('div');
+        count.className = 'count';
+        const safeId = encodeURIComponent((ev.summary||'') + (ev.start||''));
+        count.id = 'count-' + safeId;
+        count.textContent = '…';
+        el.appendChild(count);
+
+        if (isDL) dlList.appendChild(el);
+        else otherList.appendChild(el);
+
+        const key20 = (ev.summary || '') + (ev.start || '') + '::20';
+        const keyStart = (ev.summary || '') + (ev.start || '') + '::start';
+
+        function tick() {
+            const now = Date.now();
+            const startTime = new Date(ev.start).getTime();
+            const diff = startTime - now;
+            const elc = document.getElementById('count-' + safeId);
+            if (!elc) return;
+
+            if (diff <= 0) {
+                elc.textContent = 'Starting now!';
+                if (!reminders[keyStart]) {
+                    notify('Starting: ' + (ev.summary || 'Event'), ev.location || '');
+                    reminders[keyStart] = true;
+                    localStorage.setItem(REM_KEY, JSON.stringify(reminders));
+                }
+                return;
+            }
+
+            const days = Math.floor(diff / (1000*60*60*24));
+            const hrs = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+            const mins = Math.floor((diff % (1000*60*60)) / (1000*60));
+            const secs = Math.floor((diff % (1000*60)) / 1000);
+
+            let parts = [];
+            if (days) parts.push(`${days}d`);
+            parts.push(`${hrs}h ${mins}m ${secs}s`);
+            elc.textContent = parts.join(' ');
+
+            if (diff <= 20*60*1000 && !reminders[key20]) {
+                notify('Reminder: ' + (ev.summary || 'Event'), `Starts in ~20 minutes — ${ev.location || ''}`);
+                reminders[key20] = true;
+                localStorage.setItem(REM_KEY, JSON.stringify(reminders));
+            }
+        }
+
+        tick();
+        const iid = setInterval(tick, 1000);
+        tickIntervals.push(iid);
+    });
+}
+
+async function fetchAndMaybeRender() {
+    try {
+        const res = await fetch(JSON_FILE, {cache: 'no-store'});
+        if (!res.ok) throw new Error('Fetch failed: ' + res.status);
+        const text = await res.text();
+        const hash = text.slice(0, 200);
+        if (renderedHash === hash) {
+            return;
+        }
+        renderedHash = hash;
+        const events = JSON.parse(text);
+        renderEvents(events);
+    } catch (err) {
+        console.error('Error loading JSON:', err);
+        const dlList = document.getElementById('dl-list');
+        dlList.innerHTML = `<div style="color:red;">Failed to load JSON. Make sure <code>${JSON_FILE}</code> exists in the same folder (or is reachable).<br>${err.message}</div>`;
+    }
+}
+
+fetchAndMaybeRender();
+
+// Poll every 5 minutes (300000 ms)
+setInterval(fetchAndMaybeRender, 300000);
+</script>
+</body>
+</html>
