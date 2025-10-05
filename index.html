@@ -189,7 +189,6 @@ function filterEvent(ev) {
     const evText = (ev.summary || '') + ' ' + (ev.description || '');
     const isDL = /distance learning/i.test(evText);
 
-    // Time filter
     let timeOk = false;
     if(selectedDate) timeOk = start.toDateString() === selectedDate.toDateString();
     else switch(currentTimeFilter){
@@ -202,7 +201,6 @@ function filterEvent(ev) {
         case 'all': timeOk = true; break;
     }
 
-    // Type filter
     let typeOk = (currentTypeFilter==='all') || (currentTypeFilter==='dl' && isDL) || (currentTypeFilter==='other' && !isDL);
 
     return timeOk && typeOk && new Date(ev.start).getTime() > Date.now();
@@ -218,8 +216,154 @@ function toggleDarkMode() {
 
 document.getElementById('dark-toggle').addEventListener('click', toggleDarkMode);
 
-// More JS (renderEvents, fetchAndRender, ticks, filters, etc.) will be included next.  
+function renderEvents(events) {
+    clearTicks();
+    const dlList = document.getElementById('dl-list');
+    const otherList = document.getElementById('other-list');
+    dlList.innerHTML = '';
+    otherList.innerHTML = '';
 
+    const reminders = JSON.parse(localStorage.getItem(REM_KEY) || '{}');
+    const filteredEvents = events.filter(filterEvent)
+                                 .sort((a,b) => new Date(a.start) - new Date(b.start));
+
+    if(filteredEvents.length === 0){
+        const noMsg = document.createElement('div');
+        noMsg.className = 'no-events';
+        noMsg.textContent = 'No events for this selection.';
+        dlList.appendChild(noMsg);
+        otherList.appendChild(noMsg.cloneNode(true));
+    }
+
+    filteredEvents.forEach((ev, idx) => {
+        const evText = (ev.summary || '') + ' ' + (ev.description || '');
+        const isDL = /distance learning/i.test(evText);
+
+        const el = document.createElement('div');
+        el.className = 'event ' + (isDL ? 'distance-learning' : 'other');
+
+        const title = document.createElement('div');
+        title.textContent = ev.summary || '(no title)';
+        title.style.fontWeight = '700';
+        el.appendChild(title);
+
+        const meta = document.createElement('div');
+        meta.className = 'meta';
+        const sISO = formatDateDDMM(ev.start);
+        const eISO = ev.end ? formatDateDDMM(ev.end) : '';
+        meta.innerHTML = `${ev.location ? (ev.location + ' • ') : ''}<small>${sISO}${eISO ? ' — ' + eISO : ''}</small>`;
+        el.appendChild(meta);
+
+        const count = document.createElement('div');
+        count.className = 'count';
+        const safeId = encodeURIComponent((ev.summary||'') + (ev.start||''));
+        count.id = 'count-' + safeId;
+        count.textContent = '…';
+        el.appendChild(count);
+
+        if (isDL) dlList.appendChild(el);
+        else otherList.appendChild(el);
+
+        setTimeout(() => el.classList.add('show'), idx*50);
+
+        const key20 = (ev.summary || '') + (ev.start || '') + '::20';
+        const keyStart = (ev.summary || '') + (ev.start || '') + '::start';
+
+        function tick() {
+            const now = Date.now();
+            const startTime = new Date(ev.start).getTime();
+            const diff = startTime - now;
+            const elc = document.getElementById('count-' + safeId);
+            if (!elc) return;
+
+            if(diff <= 20*60*1000) el.classList.add('starting-soon');
+
+            if (diff <= 0) {
+                elc.textContent = 'Starting now!';
+                if (!reminders[keyStart]) {
+                    notify('Starting: ' + (ev.summary || 'Event'), ev.location || '');
+                    reminders[keyStart] = true;
+                    localStorage.setItem(REM_KEY, JSON.stringify(reminders));
+                }
+                return;
+            }
+
+            const days = Math.floor(diff / (1000*60*60*24));
+            const hrs = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+            const mins = Math.floor((diff % (1000*60*60)) / (1000*60));
+            const secs = Math.floor((diff % (1000*60)) / 1000);
+
+            let parts = [];
+            if(days) parts.push(`${days}d`);
+            parts.push(`${hrs}h ${mins}m ${secs}s`);
+            elc.textContent = parts.join(' ');
+
+            if (diff <= 20*60*1000 && !reminders[key20]) {
+                notify('Reminder: ' + (ev.summary || 'Event'), `Starts in ~20 minutes — ${ev.location || ''}`);
+                reminders[key20] = true;
+                localStorage.setItem(REM_KEY, JSON.stringify(reminders));
+            }
+        }
+
+        tick();
+        tickIntervals.push(setInterval(tick, 1000));
+    });
+
+    if(filteredEvents.length > 0){
+        const firstEvent = document.getElementById('count-' + encodeURIComponent(filteredEvents[0].summary + filteredEvents[0].start));
+        firstEvent?.scrollIntoView({behavior:'smooth', block:'center'});
+    }
+}
+
+async function fetchAndRender() {
+    try {
+        const res = await fetch(JSON_FILE, {cache: 'no-store'});
+        if (!res.ok) throw new Error('Fetch failed: ' + res.status);
+        const text = await res.text();
+        const hash = text.slice(0, 200);
+        if (renderedHash === hash) return;
+        renderedHash = hash;
+        const events = JSON.parse(text);
+        renderEvents(events);
+    } catch(err) {
+        console.error('Error loading JSON:', err);
+        const dlList = document.getElementById('dl-list');
+        dlList.innerHTML = `<div style="color:red;">Failed to load JSON.<br>${err.message}</div>`;
+    }
+}
+
+// Filter button events
+document.querySelectorAll('[role="region"][aria-label="Time Filters"] button').forEach(btn => {
+    btn.addEventListener('click', () => {
+        currentTimeFilter = btn.dataset.filter;
+        localStorage.setItem('timeFilter', currentTimeFilter);
+        document.querySelectorAll('[role="region"][aria-label="Time Filters"] button').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        selectedDate = null;
+        document.getElementById('date-picker').value = '';
+        fetchAndRender();
+    });
+});
+
+document.getElementById('date-picker').addEventListener('change', e => {
+    selectedDate = e.target.value ? new Date(e.target.value) : null;
+    document.querySelectorAll('[role="region"][aria-label="Time Filters"] button').forEach(b=>b.classList.remove('active'));
+    fetchAndRender();
+});
+
+document.querySelectorAll('[role="region"][aria-label="Type Filters"] button:not(#dark-toggle)').forEach(btn => {
+    btn.addEventListener('click', () => {
+        currentTypeFilter = btn.dataset.type;
+        localStorage.setItem('typeFilter', currentTypeFilter);
+        document.querySelectorAll('[role="region"][aria-label="Type Filters"] button').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        fetchAndRender();
+    });
+});
+
+fetchAndRender();
+setInterval(fetchAndRender, 300000);
 </script>
+
 </body>
 </html>
