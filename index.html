@@ -5,68 +5,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Calendar Countdown</title>
 <style>
-  :root {
-    --bg-color: white;
-    --text-color: #222;
-    --meta-color: #555;
-    --count-color: #0b6b0b;
-    --dl-bg: rgba(235,255,235,0.95);
-    --dl-border: #0b6b0b;
-    --other-bg: rgba(235,235,255,0.95);
-    --other-border: #0b0bb6;
-    --soon-border: rgba(230,126,34,1);
-    --soon-shadow: rgba(230,126,34,0.5);
-  }
-
   body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 20px;
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    transition: background 0.3s, color 0.3s;
+    background-color: white;
+    color: #222;
   }
 
   h1 {
     text-align: center;
-    margin-top: 10px;
-  }
-
-  .filters {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 5px;
-    position: sticky;
-    top: 0;
-    background: var(--bg-color);
-    padding: 10px 0;
-    z-index: 100;
-  }
-
-  .filters button, .filters input[type="date"] {
-    padding: 6px 12px;
-    font-size: 0.9em;
-    cursor: pointer;
-    border-radius: 4px;
-    border: 1px solid #0b6b0b;
-    background: #f0f0f0;
-    transition: all 0.3s;
-  }
-
-  .filters button.active {
-    background: #0b6b0b;
-    color: white;
-    border-color: #0b6b0b;
+    margin-bottom: 20px;
   }
 
   .container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 20px;
   }
 
-  .column {
+  .left, .right {
+    width: 48%;
     display: flex;
     flex-direction: column;
   }
@@ -79,291 +39,252 @@
     background: rgba(255,255,255,0.95);
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     opacity: 0;
-    transform: translateY(5px);
-    transition: all 0.3s ease, background 0.3s, border-color 0.3s, box-shadow 0.3s;
+    transition: opacity 0.4s ease;
   }
 
-  .event.show {
-    opacity: 1;
-    transform: translateY(0);
+  .event.show { opacity: 1; }
+  .distance-learning { background: rgba(235, 255, 235, 0.95); border-color: #0b6b0b; }
+  .other { background: rgba(235, 235, 255, 0.95); border-color: #0b0bb6; }
+  .starting-soon { border-color: #b60b0b; }
+
+  .meta { font-size:0.9em; color:#555; margin-top:6px; }
+  .count { font-weight:700; color:#0b6b0b; margin-top:6px; }
+  small { color:#666; }
+  .no-events { color: #888; font-style: italic; }
+
+  .filters { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
+  .filters button { padding:6px 12px; border-radius:4px; border:1px solid #666; background:#f0f0f0; cursor:pointer; }
+  .filters button.active { background:#0b6b0b; color:white; border-color:#0b6b0b; }
+
+  #dark-toggle { margin-left:20px; }
+
+  @media(max-width:768px){
+    .left, .right { width: 100%; }
+    .filters { flex-direction: column; align-items:center; }
   }
 
-  .distance-learning {
-    background: var(--dl-bg);
-    border-color: var(--dl-border);
-  }
-
-  .other {
-    background: var(--other-bg);
-    border-color: var(--other-border);
-  }
-
-  .event.starting-soon {
-    border-color: var(--soon-border);
-    box-shadow: 0 2px 6px var(--soon-shadow);
-  }
-
-  .meta {font-size:0.9em; color:var(--meta-color); margin-top:6px;}
-  .count {font-weight:700; color:var(--count-color); margin-top:6px;}
-  small {color:#666;}
-
-  .no-events {
-    font-style: italic;
-    color: #888;
-    margin: 15px 0;
-    text-align: center;
-  }
-
-  .dark-mode {
-    --bg-color: #1c1c1c;
-    --text-color: #eee;
-    --meta-color: #aaa;
-    --count-color: #39ff14;
-    --dl-bg: rgba(10,50,10,0.9);
-    --dl-border: #0b6b0b;
-    --other-bg: rgba(20,20,80,0.9);
-    --other-border: #0b0bb6;
-    --soon-border: rgba(255,165,0,1);
-    --soon-shadow: rgba(255,165,0,0.5);
-  }
-
-  @media screen and (max-width: 768px) {
-    .container {
-      grid-template-columns: 1fr;
-    }
-  }
+  body.dark { background:#121212; color:#eee; }
+  body.dark .event { background: rgba(50,50,50,0.95); color:white; }
+  body.dark .distance-learning { background: rgba(0,100,0,0.7); border-color:#0b6b0b; }
+  body.dark .other { background: rgba(0,0,100,0.7); border-color:#0b0bb6; }
 </style>
 </head>
 <body>
-
 <h1>Upcoming Events Countdown</h1>
 
 <div class="filters" role="region" aria-label="Time Filters">
-  <button data-filter="today" class="active">Today</button>
+  <button data-filter="all">All</button>
+  <button data-filter="today">Today</button>
   <button data-filter="week">This Week</button>
   <button data-filter="month">This Month</button>
-  <button data-filter="all">All</button>
-  <input type="date" id="date-picker" aria-label="Select Date">
+  <input type="date" id="date-picker" style="padding:6px; border-radius:4px; border:1px solid #666;">
 </div>
 
 <div class="filters" role="region" aria-label="Type Filters">
-  <button data-type="all" class="active">All</button>
+  <button data-type="all">All Events</button>
   <button data-type="dl">Distance Learning</button>
   <button data-type="other">Other</button>
   <button id="dark-toggle">Dark Mode</button>
 </div>
 
 <div class="container">
-  <div class="column" id="dl-list"></div>
-  <div class="column" id="other-list"></div>
+  <div class="left" id="dl-list"></div>
+  <div class="right" id="other-list"></div>
 </div>
 
 <script>
-const JSON_FILE = 'https://roy1sarkis99-svg.github.io/event-countdown/converted_calendar.json';
-const REM_KEY = 'countdown_reminders_v6';
-let renderedHash = null;
-let tickIntervals = [];
-let currentTimeFilter = localStorage.getItem('timeFilter') || 'today';
-let currentTypeFilter = localStorage.getItem('typeFilter') || 'all';
-let selectedDate = null;
+document.addEventListener('DOMContentLoaded', () => {
+  const JSON_FILE = 'https://roy1sarkis99-svg.github.io/event-countdown/converted_calendar.json';
+  const REM_KEY = 'countdown_reminders_v6';
+  let renderedHash = null;
+  let tickIntervals = [];
+  let currentTimeFilter = localStorage.getItem('timeFilter') || 'all';
+  let currentTypeFilter = localStorage.getItem('typeFilter') || 'all';
+  let selectedDate = null;
 
-if ('Notification' in window && Notification.permission === 'default') Notification.requestPermission();
+  if('Notification' in window && Notification.permission==='default') Notification.requestPermission();
+  function notify(title, body){ if(Notification.permission==='granted') new Notification(title,{body}); else console.log('Notify:',title,body); }
 
-function notify(title, body) {
-    if (Notification.permission === 'granted') new Notification(title, {body});
-    else console.log('Notify:', title, body);
-}
-
-function formatDateDDMM(dateStr) {
-    if (!dateStr) return '';
-    const d = new Date(dateStr);
-    const p = n => n.toString().padStart(2,'0');
+  function formatDateDDMM(dateStr){
+    if(!dateStr) return '';
+    const d=new Date(dateStr);
+    const p=n=>n.toString().padStart(2,'0');
     return `${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}`;
-}
+  }
 
-function clearTicks() { tickIntervals.forEach(id => clearInterval(id)); tickIntervals = []; }
+  function clearTicks(){ tickIntervals.forEach(id=>clearInterval(id)); tickIntervals=[]; }
 
-function filterEvent(ev) {
-    const now = new Date();
-    const start = new Date(ev.start);
-    const evText = (ev.summary || '') + ' ' + (ev.description || '');
+  function filterEvent(ev){
+    const evText = (ev.summary||'') + ' ' + (ev.description||'');
     const isDL = /distance learning/i.test(evText);
-
-    let timeOk = false;
-    if(selectedDate) timeOk = start.toDateString() === selectedDate.toDateString();
-    else switch(currentTimeFilter){
-        case 'today': timeOk = start.toDateString() === now.toDateString(); break;
-        case 'week': {
-            const weekEnd = new Date(); weekEnd.setDate(now.getDate() + (7 - now.getDay())); 
-            timeOk = start >= now && start <= weekEnd; break;
-        }
-        case 'month': timeOk = start.getFullYear() === now.getFullYear() && start.getMonth() === now.getMonth(); break;
-        case 'all': timeOk = true; break;
+    // Type filter
+    if(currentTypeFilter==='dl' && !isDL) return false;
+    if(currentTypeFilter==='other' && isDL) return false;
+    // Time filter
+    const start = new Date(ev.start);
+    const now = new Date();
+    if(selectedDate){
+      return start.toDateString()===selectedDate.toDateString();
     }
+    if(currentTimeFilter==='today') return start.toDateString()===now.toDateString();
+    if(currentTimeFilter==='week'){
+      const weekStart=new Date(now); weekStart.setDate(now.getDate()-now.getDay());
+      const weekEnd=new Date(weekStart); weekEnd.setDate(weekStart.getDate()+7);
+      return start>=weekStart && start<=weekEnd;
+    }
+    if(currentTimeFilter==='month') return start.getMonth()===now.getMonth() && start.getFullYear()===now.getFullYear();
+    return true;
+  }
 
-    let typeOk = (currentTypeFilter==='all') || (currentTypeFilter==='dl' && isDL) || (currentTypeFilter==='other' && !isDL);
-
-    return timeOk && typeOk && new Date(ev.start).getTime() > Date.now();
-}
-
-// Dark mode setup
-if(localStorage.getItem('darkMode')==='true') document.body.classList.add('dark-mode');
-
-function toggleDarkMode() {
-    document.body.classList.toggle('dark-mode');
-    localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
-}
-
-document.getElementById('dark-toggle').addEventListener('click', toggleDarkMode);
-
-function renderEvents(events) {
+  function renderEvents(events){
     clearTicks();
-    const dlList = document.getElementById('dl-list');
-    const otherList = document.getElementById('other-list');
-    dlList.innerHTML = '';
-    otherList.innerHTML = '';
+    const dlList=document.getElementById('dl-list');
+    const otherList=document.getElementById('other-list');
+    dlList.innerHTML=''; otherList.innerHTML='';
+    const reminders=JSON.parse(localStorage.getItem(REM_KEY)||'{}');
 
-    const reminders = JSON.parse(localStorage.getItem(REM_KEY) || '{}');
-    const filteredEvents = events.filter(filterEvent)
-                                 .sort((a,b) => new Date(a.start) - new Date(b.start));
+    const filteredEvents=events.filter(filterEvent).sort((a,b)=>new Date(a.start)-new Date(b.start));
 
-    if(filteredEvents.length === 0){
-        const noMsg = document.createElement('div');
-        noMsg.className = 'no-events';
-        noMsg.textContent = 'No events for this selection.';
-        dlList.appendChild(noMsg);
-        otherList.appendChild(noMsg.cloneNode(true));
+    if(filteredEvents.length===0){
+      const noMsg=document.createElement('div');
+      noMsg.className='no-events';
+      noMsg.textContent='No events for this selection.';
+      dlList.appendChild(noMsg);
+      otherList.appendChild(noMsg.cloneNode(true));
     }
 
-    filteredEvents.forEach((ev, idx) => {
-        const evText = (ev.summary || '') + ' ' + (ev.description || '');
-        const isDL = /distance learning/i.test(evText);
+    filteredEvents.forEach((ev,idx)=>{
+      const evText=(ev.summary||'')+' '+(ev.description||'');
+      const isDL=/distance learning/i.test(evText);
 
-        const el = document.createElement('div');
-        el.className = 'event ' + (isDL ? 'distance-learning' : 'other');
+      const el=document.createElement('div');
+      el.className='event '+(isDL?'distance-learning':'other');
 
-        const title = document.createElement('div');
-        title.textContent = ev.summary || '(no title)';
-        title.style.fontWeight = '700';
-        el.appendChild(title);
+      const title=document.createElement('div');
+      title.textContent=ev.summary||'(no title)';
+      title.style.fontWeight='700';
+      el.appendChild(title);
 
-        const meta = document.createElement('div');
-        meta.className = 'meta';
-        const sISO = formatDateDDMM(ev.start);
-        const eISO = ev.end ? formatDateDDMM(ev.end) : '';
-        meta.innerHTML = `${ev.location ? (ev.location + ' • ') : ''}<small>${sISO}${eISO ? ' — ' + eISO : ''}</small>`;
-        el.appendChild(meta);
+      const meta=document.createElement('div');
+      meta.className='meta';
+      const sISO=formatDateDDMM(ev.start);
+      const eISO=ev.end?formatDateDDMM(ev.end):'';
+      meta.innerHTML=`${ev.location?ev.location+' • ':''}<small>${sISO}${eISO?' — '+eISO:''}</small>`;
+      el.appendChild(meta);
 
-        const count = document.createElement('div');
-        count.className = 'count';
-        const safeId = encodeURIComponent((ev.summary||'') + (ev.start||''));
-        count.id = 'count-' + safeId;
-        count.textContent = '…';
-        el.appendChild(count);
+      const count=document.createElement('div');
+      count.className='count';
+      const safeId=encodeURIComponent((ev.summary||'')+(ev.start||''));
+      count.id='count-'+safeId;
+      count.textContent='…';
+      el.appendChild(count);
 
-        if (isDL) dlList.appendChild(el);
-        else otherList.appendChild(el);
+      if(isDL) dlList.appendChild(el);
+      else otherList.appendChild(el);
 
-        setTimeout(() => el.classList.add('show'), idx*50);
+      setTimeout(()=>el.classList.add('show'),idx*50);
 
-        const key20 = (ev.summary || '') + (ev.start || '') + '::20';
-        const keyStart = (ev.summary || '') + (ev.start || '') + '::start';
+      const key20=(ev.summary||'')+(ev.start||'')+'::20';
+      const keyStart=(ev.summary||'')+(ev.start||'')+'::start';
 
-        function tick() {
-            const now = Date.now();
-            const startTime = new Date(ev.start).getTime();
-            const diff = startTime - now;
-            const elc = document.getElementById('count-' + safeId);
-            if (!elc) return;
+      function tick(){
+        const now=Date.now();
+        const startTime=new Date(ev.start).getTime();
+        const diff=startTime-now;
+        const elc=document.getElementById('count-'+safeId);
+        if(!elc) return;
 
-            if(diff <= 20*60*1000) el.classList.add('starting-soon');
+        if(diff<=20*60*1000) el.classList.add('starting-soon');
 
-            if (diff <= 0) {
-                elc.textContent = 'Starting now!';
-                if (!reminders[keyStart]) {
-                    notify('Starting: ' + (ev.summary || 'Event'), ev.location || '');
-                    reminders[keyStart] = true;
-                    localStorage.setItem(REM_KEY, JSON.stringify(reminders));
-                }
-                return;
-            }
-
-            const days = Math.floor(diff / (1000*60*60*24));
-            const hrs = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
-            const mins = Math.floor((diff % (1000*60*60)) / (1000*60));
-            const secs = Math.floor((diff % (1000*60)) / 1000);
-
-            let parts = [];
-            if(days) parts.push(`${days}d`);
-            parts.push(`${hrs}h ${mins}m ${secs}s`);
-            elc.textContent = parts.join(' ');
-
-            if (diff <= 20*60*1000 && !reminders[key20]) {
-                notify('Reminder: ' + (ev.summary || 'Event'), `Starts in ~20 minutes — ${ev.location || ''}`);
-                reminders[key20] = true;
-                localStorage.setItem(REM_KEY, JSON.stringify(reminders));
-            }
+        if(diff<=0){
+          elc.textContent='Starting now!';
+          if(!reminders[keyStart]){
+            notify('Starting: '+(ev.summary||'Event'), ev.location||'');
+            reminders[keyStart]=true;
+            localStorage.setItem(REM_KEY, JSON.stringify(reminders));
+          }
+          return;
         }
 
-        tick();
-        tickIntervals.push(setInterval(tick, 1000));
+        const days=Math.floor(diff/(1000*60*60*24));
+        const hrs=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+        const mins=Math.floor((diff%(1000*60*60))/(1000*60));
+        const secs=Math.floor((diff%(1000*60))/1000);
+
+        let parts=[];
+        if(days) parts.push(days+'d');
+        parts.push(`${hrs}h ${mins}m ${secs}s`);
+        elc.textContent=parts.join(' ');
+
+        if(diff<=20*60*1000 && !reminders[key20]){
+          notify('Reminder: '+(ev.summary||'Event'),`Starts in ~20 minutes — ${ev.location||''}`);
+          reminders[key20]=true;
+          localStorage.setItem(REM_KEY, JSON.stringify(reminders));
+        }
+      }
+
+      tick();
+      tickIntervals.push(setInterval(tick,1000));
     });
 
-    if(filteredEvents.length > 0){
-        const firstEvent = document.getElementById('count-' + encodeURIComponent(filteredEvents[0].summary + filteredEvents[0].start));
-        firstEvent?.scrollIntoView({behavior:'smooth', block:'center'});
-    }
-}
+    // scroll to top after rendering
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
 
-async function fetchAndRender() {
-    try {
-        const res = await fetch(JSON_FILE, {cache: 'no-store'});
-        if (!res.ok) throw new Error('Fetch failed: ' + res.status);
-        const text = await res.text();
-        const hash = text.slice(0, 200);
-        if (renderedHash === hash) return;
-        renderedHash = hash;
-        const events = JSON.parse(text);
-        renderEvents(events);
-    } catch(err) {
-        console.error('Error loading JSON:', err);
-        const dlList = document.getElementById('dl-list');
-        dlList.innerHTML = `<div style="color:red;">Failed to load JSON.<br>${err.message}</div>`;
+  async function fetchAndRender(){
+    try{
+      const res=await fetch(JSON_FILE,{cache:'no-store'});
+      if(!res.ok) throw new Error('Fetch failed: '+res.status);
+      const text=await res.text();
+      const hash=text.slice(0,200);
+      if(renderedHash===hash) return;
+      renderedHash=hash;
+      const events=JSON.parse(text);
+      renderEvents(events);
+    }catch(err){
+      console.error('Error loading JSON:',err);
+      const dlList=document.getElementById('dl-list');
+      dlList.innerHTML=`<div style="color:red;">Failed to load JSON.<br>${err.message}</div>`;
     }
-}
+  }
 
-// Filter button events
-document.querySelectorAll('[role="region"][aria-label="Time Filters"] button').forEach(btn => {
-    btn.addEventListener('click', () => {
-        currentTimeFilter = btn.dataset.filter;
-        localStorage.setItem('timeFilter', currentTimeFilter);
-        document.querySelectorAll('[role="region"][aria-label="Time Filters"] button').forEach(b=>b.classList.remove('active'));
-        btn.classList.add('active');
-        selectedDate = null;
-        document.getElementById('date-picker').value = '';
-        fetchAndRender();
+  // Filters logic
+  document.querySelectorAll('[role="region"][aria-label="Time Filters"] button').forEach(btn=>{
+    btn.addEventListener('click',()=>{ 
+      currentTimeFilter=btn.dataset.filter;
+      localStorage.setItem('timeFilter',currentTimeFilter);
+      document.querySelectorAll('[role="region"][aria-label="Time Filters"] button').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedDate=null;
+      document.getElementById('date-picker').value='';
+      fetchAndRender();
     });
-});
+  });
 
-document.getElementById('date-picker').addEventListener('change', e => {
-    selectedDate = e.target.value ? new Date(e.target.value) : null;
+  document.getElementById('date-picker').addEventListener('change',e=>{
+    selectedDate=e.target.value?new Date(e.target.value):null;
     document.querySelectorAll('[role="region"][aria-label="Time Filters"] button').forEach(b=>b.classList.remove('active'));
     fetchAndRender();
-});
+  });
 
-document.querySelectorAll('[role="region"][aria-label="Type Filters"] button:not(#dark-toggle)').forEach(btn => {
-    btn.addEventListener('click', () => {
-        currentTypeFilter = btn.dataset.type;
-        localStorage.setItem('typeFilter', currentTypeFilter);
-        document.querySelectorAll('[role="region"][aria-label="Type Filters"] button').forEach(b=>b.classList.remove('active'));
-        btn.classList.add('active');
-        fetchAndRender();
+  document.querySelectorAll('[role="region"][aria-label="Type Filters"] button:not(#dark-toggle)').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      currentTypeFilter=btn.dataset.type;
+      localStorage.setItem('typeFilter',currentTypeFilter);
+      document.querySelectorAll('[role="region"][aria-label="Type Filters"] button').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      fetchAndRender();
     });
+  });
+
+  // Dark mode toggle
+  document.getElementById('dark-toggle').addEventListener('click',()=>{
+    document.body.classList.toggle('dark');
+  });
+
+  fetchAndRender();
+  setInterval(fetchAndRender,300000);
 });
-
-fetchAndRender();
-setInterval(fetchAndRender, 300000);
 </script>
-
 </body>
 </html>
