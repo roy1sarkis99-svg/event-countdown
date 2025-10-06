@@ -5,30 +5,110 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Calendar Countdown</title>
 <style>
-body { font-family: Arial, sans-serif; margin:0; padding:20px; background:#fff; color:#222; }
-h1 { text-align:center; margin-bottom:20px; }
-.container { display:flex; justify-content:space-between; flex-wrap:wrap; margin-top:20px; }
-.left,.right { width:48%; display:flex; flex-direction:column; }
-.event { border:1px solid #ccc; padding:12px; margin:10px 0; border-radius:6px; background: rgba(255,255,255,0.95); box-shadow:0 2px 4px rgba(0,0,0,0.1); opacity:0; transition:opacity 0.4s ease, transform 0.3s ease; }
-.event.show { opacity:1; }
-.distance-learning { background: rgba(235,255,235,0.95); border-color:#0b6b0b; }
-.other { background: rgba(235,235,255,0.95); border-color:#0b0bb6; }
-.starting-soon { border-color:#b60b0b; animation: pulse 1s infinite alternate; }
-@keyframes pulse { 0% { transform:scale(1); } 50% { transform:scale(1.02); } 100% { transform:scale(1); } }
-.meta { font-size:0.9em; color:#555; margin-top:6px; }
-.count { font-weight:700; color:#0b6b0b; margin-top:6px; }
-small { color:#666; }
-.no-events { color:#888; font-style:italic; }
-.filters { display:flex; justify-content:center; flex-wrap:wrap; gap:10px; margin-bottom:10px; overflow-x:auto; background:#fff; padding:5px 0; position:sticky; top:0; z-index:100; border-bottom:1px solid #ccc; }
-.filters button { padding:6px 12px; border-radius:4px; border:1px solid #666; background:#f0f0f0; cursor:pointer; flex-shrink:0; }
-.filters button.active { background:#0b6b0b; color:#fff; border-color:#0b6b0b; }
-#dark-toggle { margin-left:20px; }
-::-webkit-scrollbar { height:6px; } ::-webkit-scrollbar-thumb { background:#888; border-radius:3px; }
-@media(max-width:768px){ .left,.right{width:100%;} .filters{flex-wrap:nowrap;} }
-body.dark { background:#121212; color:#eee; }
-body.dark .event { background: rgba(50,50,50,0.95); color:white; }
-body.dark .distance-learning { background: rgba(0,100,0,0.7); border-color:#0b6b0b; }
-body.dark .other { background: rgba(0,0,100,0.7); border-color:#0b0bb6; }
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background: #fff;
+  color: #222;
+}
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+.left, .right {
+  width: 48%;
+  display: flex;
+  flex-direction: column;
+}
+.event {
+  border: 1px solid #ccc;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  opacity: 0;
+  transition: opacity 0.4s ease, transform 0.3s ease;
+}
+.event.show { opacity: 1; }
+.distance-learning {
+  background: rgba(235, 255, 235, 0.95);
+  border-color: #0b6b0b;
+}
+.other {
+  background: rgba(235, 235, 255, 0.95);
+  border-color: #0b0bb6;
+}
+.starting-soon {
+  border-color: #b60b0b;
+  animation: pulse 1s infinite alternate;
+}
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+.meta {
+  font-size: 0.9em;
+  color: #555;
+  margin-top: 6px;
+}
+.count {
+  font-weight: 700;
+  color: #0b6b0b;
+  margin-top: 6px;
+}
+.no-events {
+  color: #888;
+  font-style: italic;
+}
+.filters {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
+  overflow-x: auto;
+  background: #fff;
+  padding: 5px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid #ccc;
+}
+.filters button {
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: 1px solid #666;
+  background: #f0f0f0;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.filters button.active {
+  background: #0b6b0b;
+  color: #fff;
+  border-color: #0b6b0b;
+}
+#dark-toggle { margin-left: 20px; }
+::-webkit-scrollbar { height: 6px; }
+::-webkit-scrollbar-thumb { background: #888; border-radius: 3px; }
+
+@media(max-width: 768px) {
+  .left, .right { width: 100%; }
+  .filters { flex-wrap: nowrap; }
+}
+
+body.dark { background: #121212; color: #eee; }
+body.dark .event { background: rgba(50, 50, 50, 0.95); color: white; }
+body.dark .distance-learning { background: rgba(0,100,0,0.7); border-color: #0b6b0b; }
+body.dark .other { background: rgba(0,0,100,0.7); border-color: #0b0bb6; }
 </style>
 </head>
 <body>
@@ -58,124 +138,206 @@ body.dark .other { background: rgba(0,0,100,0.7); border-color:#0b0bb6; }
 document.addEventListener('DOMContentLoaded', () => {
   const JSON_FILE = 'https://roy1sarkis99-svg.github.io/event-countdown/converted_calendar.json';
   const REM_KEY = 'countdown_reminders_v6';
-  let renderedHash=null, tickIntervals=[], eventsData=[];
-  let currentTimeFilter=localStorage.getItem('timeFilter')||'all';
-  let currentTypeFilter=localStorage.getItem('typeFilter')||'all';
-  let selectedDate=null;
+  let renderedHash = null, tickIntervals = [], eventsData = [];
+  let currentTimeFilter = localStorage.getItem('timeFilter') || 'all';
+  let currentTypeFilter = localStorage.getItem('typeFilter') || 'all';
+  let selectedDate = null;
 
-  if('Notification' in window && Notification.permission==='default') Notification.requestPermission();
+  if ('Notification' in window && Notification.permission === 'default')
+    Notification.requestPermission();
 
-  function notify(title, body){ if(Notification.permission==='granted') new Notification(title,{body}); else console.log('Notify:',title,body); }
-  function formatDateDDMM(dateStr){ if(!dateStr)return''; const d=new Date(dateStr); const p=n=>n.toString().padStart(2,'0'); return `${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}`; }
-  function clearTicks(){ tickIntervals.forEach(id=>clearInterval(id)); tickIntervals=[]; }
+  function notify(title, body) {
+    if (Notification.permission === 'granted') new Notification(title, { body });
+  }
 
-  function filterEvent(ev){
-    const evText=(ev.summary||'')+' '+(ev.description||'');
-    const isDL=/distance learning/i.test(evText);
-    if(currentTypeFilter==='dl'&&!isDL) return false;
-    if(currentTypeFilter==='other'&&isDL) return false;
-    const start=new Date(ev.start), now=new Date();
-    if(selectedDate) return start.toDateString()===selectedDate.toDateString();
-    if(currentTimeFilter==='today') return start.toDateString()===now.toDateString();
-    if(currentTimeFilter==='week'){
-      const weekStart=new Date(now); weekStart.setDate(now.getDate()-now.getDay());
-      const weekEnd=new Date(weekStart); weekEnd.setDate(weekStart.getDate()+7);
-      return start>=weekStart && start<=weekEnd;
+  function formatDateDDMM(dateStr) {
+    if (!dateStr) return '';
+    const d = new Date(dateStr);
+    const p = n => n.toString().padStart(2, '0');
+    return `${p(d.getDate())}/${p(d.getMonth() + 1)}/${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}`;
+  }
+
+  function clearTicks() {
+    tickIntervals.forEach(id => clearInterval(id));
+    tickIntervals = [];
+  }
+
+  function filterEvent(ev) {
+    const evText = (ev.summary || '') + ' ' + (ev.description || '');
+    const isDL = /distance learning/i.test(evText);
+    if (currentTypeFilter === 'dl' && !isDL) return false;
+    if (currentTypeFilter === 'other' && isDL) return false;
+
+    const start = new Date(ev.start), now = new Date();
+    if (selectedDate) return start.toDateString() === selectedDate.toDateString();
+    if (currentTimeFilter === 'today') return start.toDateString() === now.toDateString();
+    if (currentTimeFilter === 'week') {
+      const weekStart = new Date(now); weekStart.setDate(now.getDate() - now.getDay());
+      const weekEnd = new Date(weekStart); weekEnd.setDate(weekStart.getDate() + 7);
+      return start >= weekStart && start <= weekEnd;
     }
-    if(currentTimeFilter==='month') return start.getMonth()===now.getMonth() && start.getFullYear()===now.getFullYear();
+    if (currentTimeFilter === 'month') return start.getMonth() === now.getMonth() && start.getFullYear() === now.getFullYear();
     return true;
   }
 
-  function renderEvents(events){
+  function renderEvents(events) {
     clearTicks();
-    const dlList=document.getElementById('dl-list'), otherList=document.getElementById('other-list');
-    dlList.innerHTML=''; otherList.innerHTML='';
-    const reminders=JSON.parse(localStorage.getItem(REM_KEY)||'{}');
-    const filteredEvents=events.filter(filterEvent).sort((a,b)=>new Date(a.start)-new Date(b.start));
+    const dlList = document.getElementById('dl-list');
+    const otherList = document.getElementById('other-list');
+    dlList.innerHTML = '';
+    otherList.innerHTML = '';
 
-    if(filteredEvents.length===0){
-      const noMsg=document.createElement('div'); noMsg.className='no-events'; noMsg.textContent='No events for this selection.';
-      dlList.appendChild(noMsg); otherList.appendChild(noMsg.cloneNode(true));
-      window.scrollTo({top:0,behavior:'smooth'});
+    const reminders = JSON.parse(localStorage.getItem(REM_KEY) || '{}');
+    const filteredEvents = events.filter(filterEvent).sort((a, b) => new Date(a.start) - new Date(b.start));
+
+    if (filteredEvents.length === 0) {
+      const noMsg = document.createElement('div');
+      noMsg.className = 'no-events';
+      noMsg.textContent = 'No events for this selection.';
+      dlList.appendChild(noMsg);
+      otherList.appendChild(noMsg.cloneNode(true));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
 
-    filteredEvents.forEach((ev,idx)=>{
-      const evText=(ev.summary||'')+' '+(ev.description||'');
-      const isDL=/distance learning/i.test(evText);
-      const el=document.createElement('div'); el.className='event '+(isDL?'distance-learning':'other');
+    const isMobile = window.innerWidth <= 768;
+    const useSingleList = isMobile && currentTypeFilter === 'all';
 
-      const title=document.createElement('div'); title.textContent=ev.summary||'(no title)'; title.style.fontWeight='700'; el.appendChild(title);
-      const meta=document.createElement('div'); meta.className='meta'; const sISO=formatDateDDMM(ev.start); const eISO=ev.end?formatDateDDMM(ev.end):'';
-      meta.innerHTML=`${ev.location?ev.location+' • ':''}<small>${sISO}${eISO?' — '+eISO:''}</small>`; el.appendChild(meta);
+    filteredEvents.forEach((ev, idx) => {
+      const evText = (ev.summary || '') + ' ' + (ev.description || '');
+      const isDL = /distance learning/i.test(evText);
+      const el = document.createElement('div');
+      el.className = 'event ' + (isDL ? 'distance-learning' : 'other');
 
-      const count=document.createElement('div'); count.className='count'; const safeId=encodeURIComponent((ev.summary||'')+(ev.start||'')); count.id='count-'+safeId; count.textContent='…'; el.appendChild(count);
+      const title = document.createElement('div');
+      title.textContent = ev.summary || '(no title)';
+      title.style.fontWeight = '700';
+      el.appendChild(title);
 
-      if(isDL) dlList.appendChild(el); else otherList.appendChild(el);
-      setTimeout(()=>el.classList.add('show'),idx*50);
+      const meta = document.createElement('div');
+      meta.className = 'meta';
+      const sISO = formatDateDDMM(ev.start);
+      const eISO = ev.end ? formatDateDDMM(ev.end) : '';
+      meta.innerHTML = `${ev.location ? ev.location + ' • ' : ''}<small>${sISO}${eISO ? ' — ' + eISO : ''}</small>`;
+      el.appendChild(meta);
 
-      const key20=(ev.summary||'')+(ev.start||'')+'::20', keyStart=(ev.summary||'')+(ev.start||'')+'::start';
-      function tick(){
-        const now=Date.now(); const startTime=new Date(ev.start).getTime(); const diff=startTime-now; const elc=document.getElementById('count-'+safeId); if(!elc) return;
-        if(diff<=20*60*1000) el.classList.add('starting-soon');
-        if(diff<=0){ elc.textContent='Starting now!'; if(!reminders[keyStart]){ notify('Starting: '+(ev.summary||'Event'),ev.location||''); reminders[keyStart]=true; localStorage.setItem(REM_KEY,JSON.stringify(reminders)); } return; }
-        const days=Math.floor(diff/(1000*60*60*24)), hrs=Math.floor((diff%(1000*60*60*24))/(1000*60*60)), mins=Math.floor((diff%(1000*60*60))/(1000*60)), secs=Math.floor((diff%(1000*60))/1000);
-        let parts=[]; if(days) parts.push(days+'d'); parts.push(`${hrs}h ${mins}m ${secs}s`); elc.textContent=parts.join(' ');
-        if(diff<=20*60*1000&&!reminders[key20]){ notify('Reminder: '+(ev.summary||'Event'),`Starts in ~20 minutes — ${ev.location||''}`); reminders[key20]=true; localStorage.setItem(REM_KEY,JSON.stringify(reminders)); }
+      const count = document.createElement('div');
+      count.className = 'count';
+      const safeId = encodeURIComponent((ev.summary || '') + (ev.start || ''));
+      count.id = 'count-' + safeId;
+      count.textContent = '…';
+      el.appendChild(count);
+
+      // Append logic
+      if (useSingleList) dlList.appendChild(el);
+      else if (isDL) dlList.appendChild(el);
+      else otherList.appendChild(el);
+
+      setTimeout(() => el.classList.add('show'), idx * 50);
+
+      const key20 = (ev.summary || '') + (ev.start || '') + '::20';
+      const keyStart = (ev.summary || '') + (ev.start || '') + '::start';
+
+      function tick() {
+        const now = Date.now();
+        const startTime = new Date(ev.start).getTime();
+        const diff = startTime - now;
+        const elc = document.getElementById('count-' + safeId);
+        if (!elc) return;
+
+        if (diff <= 20 * 60 * 1000) el.classList.add('starting-soon');
+        if (diff <= 0) {
+          elc.textContent = 'Starting now!';
+          if (!reminders[keyStart]) {
+            notify('Starting: ' + (ev.summary || 'Event'), ev.location || '');
+            reminders[keyStart] = true;
+            localStorage.setItem(REM_KEY, JSON.stringify(reminders));
+          }
+          return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hrs = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const secs = Math.floor((diff % (1000 * 60)) / 1000);
+        let parts = [];
+        if (days) parts.push(days + 'd');
+        parts.push(`${hrs}h ${mins}m ${secs}s`);
+        elc.textContent = parts.join(' ');
+
+        if (diff <= 20 * 60 * 1000 && !reminders[key20]) {
+          notify('Reminder: ' + (ev.summary || 'Event'), `Starts in ~20 minutes — ${ev.location || ''}`);
+          reminders[key20] = true;
+          localStorage.setItem(REM_KEY, JSON.stringify(reminders));
+        }
       }
-      tick(); tickIntervals.push(setInterval(tick,1000));
+
+      tick();
+      tickIntervals.push(setInterval(tick, 1000));
     });
 
-    window.scrollTo({top:0, behavior:'smooth'});
+    if (useSingleList) otherList.innerHTML = '';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  async function fetchAndRender(){
-    try{
-      const res=await fetch(JSON_FILE,{cache:'no-store'}); if(!res.ok) throw new Error('Fetch failed: '+res.status);
-      const text=await res.text(); const hash=text.slice(0,200);
-      if(renderedHash!==hash){ renderedHash=hash; eventsData=JSON.parse(text); }
+  async function fetchAndRender() {
+    try {
+      const res = await fetch(JSON_FILE, { cache: 'no-store' });
+      if (!res.ok) throw new Error('Fetch failed: ' + res.status);
+      const text = await res.text();
+      const hash = text.slice(0, 200);
+      if (renderedHash !== hash) {
+        renderedHash = hash;
+        eventsData = JSON.parse(text);
+      }
       renderEvents(eventsData);
-    }catch(err){
+    } catch (err) {
       console.error(err);
-      document.getElementById('dl-list').innerHTML=`<div style="color:red;">Failed to load JSON.<br>${err.message}</div>`;
+      document.getElementById('dl-list').innerHTML = `<div style="color:red;">Failed to load JSON.<br>${err.message}</div>`;
     }
   }
 
   // Time filters
-  document.querySelectorAll('[role="region"][aria-label="Time Filters"] button').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      currentTimeFilter=btn.dataset.filter; localStorage.setItem('timeFilter',currentTimeFilter);
-      document.querySelectorAll('[role="region"][aria-label="Time Filters"] button').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active'); selectedDate=null; document.getElementById('date-picker').value='';
+  document.querySelectorAll('[role="region"][aria-label="Time Filters"] button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentTimeFilter = btn.dataset.filter;
+      localStorage.setItem('timeFilter', currentTimeFilter);
+      document.querySelectorAll('[role="region"][aria-label="Time Filters"] button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedDate = null;
+      document.getElementById('date-picker').value = '';
       renderEvents(eventsData);
     });
   });
 
   // Date picker
-  document.getElementById('date-picker').addEventListener('change',e=>{
-    selectedDate=e.target.value?new Date(e.target.value):null;
-    document.querySelectorAll('[role="region"][aria-label="Time Filters"] button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('date-picker').addEventListener('change', e => {
+    selectedDate = e.target.value ? new Date(e.target.value) : null;
+    document.querySelectorAll('[role="region"][aria-label="Time Filters"] button').forEach(b => b.classList.remove('active'));
     renderEvents(eventsData);
   });
 
   // Type filters
-  document.querySelectorAll('[role="region"][aria-label="Type Filters"] button:not(#dark-toggle)').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      currentTypeFilter=btn.dataset.type; localStorage.setItem('typeFilter',currentTypeFilter);
-      document.querySelectorAll('[role="region"][aria-label="Type Filters"] button').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active'); renderEvents(eventsData);
+  document.querySelectorAll('[role="region"][aria-label="Type Filters"] button:not(#dark-toggle)').forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentTypeFilter = btn.dataset.type;
+      localStorage.setItem('typeFilter', currentTypeFilter);
+      document.querySelectorAll('[role="region"][aria-label="Type Filters"] button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderEvents(eventsData);
     });
   });
 
   // Dark mode
-  const darkBtn=document.getElementById('dark-toggle');
-  if(localStorage.getItem('darkMode')==='true') document.body.classList.add('dark');
-  darkBtn.addEventListener('click',()=>{
+  const darkBtn = document.getElementById('dark-toggle');
+  if (localStorage.getItem('darkMode') === 'true') document.body.classList.add('dark');
+  darkBtn.addEventListener('click', () => {
     document.body.classList.toggle('dark');
-    localStorage.setItem('darkMode',document.body.classList.contains('dark'));
+    localStorage.setItem('darkMode', document.body.classList.contains('dark'));
   });
 
-  fetchAndRender(); setInterval(fetchAndRender,300000);
+  fetchAndRender();
+  setInterval(fetchAndRender, 300000);
 });
 </script>
 </body>
