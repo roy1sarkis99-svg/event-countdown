@@ -3,12 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Calendar Countdown</title>
-
-<!-- PWA Manifest -->
-<link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0b6b0b">
-
+<link rel="icon" href="icon-192.png" type="image/png">
+<link rel="manifest" href="manifest.json">
+<title>Calendar Countdown</title>
 <style>
 body {
   font-family: Arial, sans-serif;
@@ -51,7 +49,6 @@ body.dark .distance-learning { background: rgba(0,100,0,0.7); border-color: #0b6
 body.dark .other { background: rgba(0,0,100,0.7); border-color: #0b0bb6; }
 </style>
 </head>
-
 <body>
 <h1>Upcoming Events Countdown</h1>
 
@@ -78,26 +75,32 @@ body.dark .other { background: rgba(0,0,100,0.7); border-color: #0b0bb6; }
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const JSON_FILE = 'https://raw.githubusercontent.com/roy1sarkis99-svg/event-countdown/main/converted_calendar.json';
-  const REM_KEY = 'countdown_reminders_v7';
+  const REM_KEY = 'countdown_reminders_v6';
   let renderedHash = null, tickIntervals = {}, eventsData = [];
   let currentTimeFilter = localStorage.getItem('timeFilter') || 'all';
   let currentTypeFilter = localStorage.getItem('typeFilter') || 'all';
   let selectedDate = null;
 
-  // Request notifications
+  // Register the Service Worker
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js')
+      .then(() => console.log('Service Worker registered successfully'))
+      .catch(err => console.error('Service Worker registration failed:', err));
+  }
+
+  // Ask for notification permission
   if ('Notification' in window && Notification.permission === 'default') {
     Notification.requestPermission();
   }
 
-  // Show notifications via Service Worker if possible
-  async function notify(title, body) {
-    if ('serviceWorker' in navigator && 'showNotification' in ServiceWorkerRegistration.prototype) {
-      try {
-        const reg = await navigator.serviceWorker.getRegistration();
-        if (reg) reg.showNotification(title, { body, icon: './icon-192.png' });
-      } catch(e){ console.warn(e); }
-    } else if ("Notification" in window && Notification.permission === "granted") {
-      try { new Notification(title, { body }); } catch{}
+  // Request notification from service worker
+  function showNotification(title, body) {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.ready.then(reg => {
+        reg.showNotification(title, { body });
+      });
+    } else if (Notification.permission === 'granted') {
+      new Notification(title, { body });
     }
   }
 
@@ -141,7 +144,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     const isMobile = window.innerWidth<=768;
     const useSingleList = isMobile && currentTypeFilter==='all';
-
     filtered.forEach((ev,idx)=>{
       const evText=(ev.summary||'')+' '+(ev.description||'');
       const isDL = /distance learning/i.test(evText);
@@ -156,21 +158,16 @@ document.addEventListener('DOMContentLoaded', () => {
       else if(isDL) dlList.appendChild(el);
       else otherList.appendChild(el);
       setTimeout(()=>el.classList.add('show'),idx*50);
-
       const key20=(ev.summary||'')+(ev.start||'')+'::20';
       const keyStart=(ev.summary||'')+(ev.start||'')+'::start';
-
       function tick(){
         const now=Date.now(); const startTime=new Date(ev.start).getTime(); const diff=startTime-now;
         const elc=document.getElementById('count-'+safeId); if(!elc||!el.parentNode) return;
-
-        // Remove after 20 mins past start
         if(diff<=-20*60*1000){ el.parentNode.removeChild(el); clearInterval(tickIntervals[safeId]); return; }
         if(diff<=20*60*1000) el.classList.add('starting-soon');
-
         if(diff<=0){
           elc.textContent='Starting now!';
-          if(!reminders[keyStart]){ notify('Starting: '+(ev.summary||'Event'),ev.location||''); reminders[keyStart]=true; localStorage.setItem(REM_KEY,JSON.stringify(reminders)); }
+          if(!reminders[keyStart]){ showNotification('Starting: '+(ev.summary||'Event'),ev.location||''); reminders[keyStart]=true; localStorage.setItem(REM_KEY,JSON.stringify(reminders)); }
         } else {
           const days=Math.floor(diff/(1000*60*60*24));
           const hrs=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
@@ -179,13 +176,10 @@ document.addEventListener('DOMContentLoaded', () => {
           let parts=[]; if(days) parts.push(days+'d'); parts.push(`${hrs}h ${mins}m ${secs}s`);
           elc.textContent=parts.join(' ');
         }
-
-        if(diff<=20*60*1000 && !reminders[key20]){ notify('Reminder: '+(ev.summary||'Event'),`Starts in ~20 minutes — ${ev.location||''}`); reminders[key20]=true; localStorage.setItem(REM_KEY,JSON.stringify(reminders)); }
+        if(diff<=20*60*1000 && !reminders[key20]){ showNotification('Reminder: '+(ev.summary||'Event'),`Starts in ~20 minutes — ${ev.location||''}`); reminders[key20]=true; localStorage.setItem(REM_KEY,JSON.stringify(reminders)); }
       }
-
       tick(); tickIntervals[safeId]=setInterval(tick,1000);
     });
-
     if(useSingleList) otherList.innerHTML='';
     window.scrollTo({top:0,behavior:'smooth'});
   }
@@ -204,7 +198,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Time filters
   document.querySelectorAll('[role="region"][aria-label="Time Filters"] button').forEach(btn=>{
     btn.addEventListener('click',()=>{
       currentTimeFilter=btn.dataset.filter;
@@ -217,14 +210,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Date picker
   document.getElementById('date-picker').addEventListener('change',e=>{
     selectedDate=e.target.value?new Date(e.target.value):null;
     document.querySelectorAll('[role="region"][aria-label="Time Filters"] button').forEach(b=>b.classList.remove('active'));
     renderEvents(eventsData);
   });
 
-  // Type filters
   document.querySelectorAll('[role="region"][aria-label="Type Filters"] button:not(#dark-toggle)').forEach(btn=>{
     btn.addEventListener('click',()=>{
       currentTypeFilter=btn.dataset.type;
@@ -235,20 +226,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Dark mode
   const darkBtn=document.getElementById('dark-toggle');
   if(localStorage.getItem('darkMode')==='true') document.body.classList.add('dark');
   darkBtn.addEventListener('click',()=>{ document.body.classList.toggle('dark'); localStorage.setItem('darkMode',document.body.classList.contains('dark')); });
 
   fetchAndRender();
   setInterval(fetchAndRender,300000);
-
-  // Register Service Worker
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./sw.js')
-      .then(()=>console.log('Service Worker registered'))
-      .catch(err=>console.warn('SW registration failed:', err));
-  }
 });
 </script>
 </body>
