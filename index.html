@@ -14,50 +14,147 @@ body {
   padding: 20px;
   background: #fff;
   color: #222;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 h1 { text-align: center; margin-bottom: 20px; }
-.container { display: flex; justify-content: space-between; flex-wrap: wrap; margin-top: 20px; }
-.left, .right { width: 48%; display: flex; flex-direction: column; }
-.event {
-  border: 1px solid #ccc; padding: 12px; margin: 10px 0; border-radius: 6px;
-  background: rgba(255,255,255,0.95); box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  opacity: 0; transition: opacity 0.4s ease, transform 0.3s ease;
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  transition: all 0.3s ease;
 }
-.event.show { opacity: 1; }
-.distance-learning { background: rgba(235,255,235,0.95); border-color: #0b6b0b; }
-.other { background: rgba(235,235,255,0.95); border-color: #0b0bb6; }
-.starting-soon { border-color: #b60b0b; animation: pulse 1s infinite alternate; }
-@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+.left, .right { width: 48%; display: flex; flex-direction: column; }
+
+.event {
+  border: 1px solid #ccc;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.95);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease, transform 0.5s ease, background 0.3s ease, color 0.3s ease;
+}
+.event.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+.distance-learning {
+  background: linear-gradient(145deg,#ebffeb,#d9ffd9);
+  border-color: #0b6b0b;
+}
+.other {
+  background: linear-gradient(145deg,#ebebff,#d9d9ff);
+  border-color: #0b0bb6;
+}
+
+/* refined starting soon glow */
+.starting-soon {
+  border-color: #b60b0b;
+  box-shadow: 0 0 8px rgba(182,11,11,0.6);
+  animation: glow 1.4s ease-in-out infinite alternate;
+}
+@keyframes glow {
+  from { box-shadow: 0 0 4px rgba(182,11,11,0.3); }
+  to   { box-shadow: 0 0 12px rgba(182,11,11,0.8); }
+}
+
 .meta { font-size: 0.9em; color: #555; margin-top: 6px; }
 .count { font-weight: 700; color: #0b6b0b; margin-top: 6px; }
 .no-events { color: #888; font-style: italic; }
+
 .filters {
-  display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-bottom: 10px;
-  overflow-x: auto; background: #fff; padding: 5px 0; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #ccc;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
+  overflow-x: auto;
+  background: #fff;
+  padding: 5px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid #ccc;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 .filters button {
-  padding: 6px 12px; border-radius: 4px; border: 1px solid #666; background: #f0f0f0; cursor: pointer; flex-shrink: 0;
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: 1px solid #666;
+  background: #f0f0f0;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
 }
-.filters button.active { background: #0b6b0b; color: #fff; border-color: #0b6b0b; }
+.filters button:hover { transform: scale(1.05); }
+.filters button.active {
+  background: #0b6b0b;
+  color: #fff;
+  border-color: #0b6b0b;
+}
 #dark-toggle { margin-left: 20px; }
+
 ::-webkit-scrollbar { height: 6px; }
 ::-webkit-scrollbar-thumb { background: #888; border-radius: 3px; }
-@media(max-width: 768px) { .left, .right { width: 100%; } .filters { flex-wrap: nowrap; } }
+
+@media(max-width:768px){
+  .left, .right { width: 100%; }
+  .filters { flex-wrap: nowrap; }
+}
+
+/* dark mode transitions */
 body.dark { background: #121212; color: #eee; }
 body.dark .event { background: rgba(50,50,50,0.95); color: white; }
-body.dark .distance-learning { background: rgba(0,100,0,0.7); border-color: #0b6b0b; }
-body.dark .other { background: rgba(0,0,100,0.7); border-color: #0b0bb6; }
+body.dark .distance-learning { background: linear-gradient(145deg,#003300,#006600); border-color: #0b6b0b; }
+body.dark .other { background: linear-gradient(145deg,#000033,#000066); border-color: #0b0bb6; }
+body.dark .filters { background: #1c1c1c; }
+
+/* highlight nearest upcoming */
+.event.upcoming {
+  box-shadow: 0 0 10px rgba(11,107,11,0.5);
+}
+
+/* scroll to top button */
+#scrollTopBtn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 50%;
+  background: #0b6b0b;
+  color: #fff;
+  font-size: 22px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 150;
+}
+#scrollTopBtn.show {
+  display: flex;
+  opacity: 0.9;
+}
+#scrollTopBtn:hover { transform: scale(1.1); opacity: 1; }
 </style>
 </head>
 <body>
 <h1>Upcoming Events Countdown</h1>
 
+<!-- Filters -->
 <div class="filters" role="region" aria-label="Time Filters">
   <button data-filter="all">All</button>
   <button data-filter="today">Today</button>
   <button data-filter="week">This Week</button>
   <button data-filter="month">This Month</button>
-  <input type="date" id="date-picker" style="padding:6px; border-radius:4px; border:1px solid #666; flex-shrink:0;">
+  <input type="date" id="date-picker" style="padding:6px;border-radius:4px;border:1px solid #666;flex-shrink:0;">
 </div>
 
 <div class="filters" role="region" aria-label="Type Filters">
@@ -67,121 +164,170 @@ body.dark .other { background: rgba(0,0,100,0.7); border-color: #0b0bb6; }
   <button id="dark-toggle">Dark Mode</button>
 </div>
 
+<!-- Lists -->
 <div class="container">
   <div class="left" id="dl-list"></div>
   <div class="right" id="other-list"></div>
 </div>
 
+<!-- Scroll to top -->
+<button id="scrollTopBtn" aria-label="Scroll to top">↑</button>
+
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const JSON_FILE = 'https://raw.githubusercontent.com/roy1sarkis99-svg/event-countdown/main/converted_calendar.json';
-  const REM_KEY = 'countdown_reminders_v6';
-  let renderedHash = null, tickIntervals = {}, eventsData = [];
-  let currentTimeFilter = localStorage.getItem('timeFilter') || 'all';
-  let currentTypeFilter = localStorage.getItem('typeFilter') || 'all';
-  let selectedDate = null;
+  const JSON_FILE='https://raw.githubusercontent.com/roy1sarkis99-svg/event-countdown/main/converted_calendar.json';
+  const REM_KEY='countdown_reminders_v6';
+  let renderedHash=null,tickIntervals={},eventsData=[];
+  let currentTimeFilter=localStorage.getItem('timeFilter')||'all';
+  let currentTypeFilter=localStorage.getItem('typeFilter')||'all';
+  let selectedDate=null;
 
-  // Register the Service Worker
-  if ('serviceWorker' in navigator) {
+  // Service worker
+  if('serviceWorker'in navigator){
     navigator.serviceWorker.register('sw.js')
-      .then(() => console.log('Service Worker registered successfully'))
-      .catch(err => console.error('Service Worker registration failed:', err));
+    .then(()=>console.log('SW registered')).catch(console.error);
   }
 
-  // Ask for notification permission
-  if ('Notification' in window && Notification.permission === 'default') {
+  // Notifications
+  if('Notification'in window && Notification.permission==='default'){
     Notification.requestPermission();
   }
-
-  // Request notification from service worker
-  function showNotification(title, body) {
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.ready.then(reg => {
-        reg.showNotification(title, { body });
-      });
-    } else if (Notification.permission === 'granted') {
-      new Notification(title, { body });
-    }
+  function showNotification(title,body){
+    if('serviceWorker'in navigator){
+      navigator.serviceWorker.ready.then(r=>r.showNotification(title,{body}));
+    }else if(Notification.permission==='granted'){ new Notification(title,{body}); }
   }
 
-  function formatDateDDMM(dateStr) {
-    if (!dateStr) return '';
-    const d = new Date(dateStr);
-    const p = n => n.toString().padStart(2,'0');
-    return `${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}`;
+  function formatDateDDMM(dateStr){
+    if(!dateStr)return'';
+    const d=new Date(dateStr);
+    const p=n=>n.toString().padStart(2,'0');
+    return`${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}`;
   }
 
-  function clearTicks() { for (let id in tickIntervals) clearInterval(tickIntervals[id]); tickIntervals = {}; }
+  function clearTicks(){ for(let id in tickIntervals)clearInterval(tickIntervals[id]); tickIntervals={}; }
 
-  function filterEvent(ev) {
-    const evText = (ev.summary||'')+' '+(ev.description||'');
-    const isDL = /distance learning/i.test(evText);
-    if (currentTypeFilter==='dl' && !isDL) return false;
-    if (currentTypeFilter==='other' && isDL) return false;
-    const start = new Date(ev.start), now = new Date();
-    if(selectedDate) return start.toDateString()===selectedDate.toDateString();
-    if(currentTimeFilter==='today') return start.toDateString()===now.toDateString();
+  function filterEvent(ev){
+    const evText=(ev.summary||'')+' '+(ev.description||'');
+    const isDL=/distance learning/i.test(evText);
+    if(currentTypeFilter==='dl'&&!isDL)return false;
+    if(currentTypeFilter==='other'&&isDL)return false;
+    const start=new Date(ev.start),now=new Date();
+    if(selectedDate)return start.toDateString()===selectedDate.toDateString();
+    if(currentTimeFilter==='today')return start.toDateString()===now.toDateString();
     if(currentTimeFilter==='week'){
-      const weekStart=new Date(now); weekStart.setDate(now.getDate()-now.getDay());
-      const weekEnd=new Date(weekStart); weekEnd.setDate(weekStart.getDate()+7);
-      return start>=weekStart && start<=weekEnd;
+      const weekStart=new Date(now);weekStart.setDate(now.getDate()-now.getDay());
+      const weekEnd=new Date(weekStart);weekEnd.setDate(weekStart.getDate()+7);
+      return start>=weekStart&&start<=weekEnd;
     }
-    if(currentTimeFilter==='month') return start.getMonth()===now.getMonth() && start.getFullYear()===now.getFullYear();
+    if(currentTimeFilter==='month')return start.getMonth()===now.getMonth()&&start.getFullYear()===now.getFullYear();
     return true;
   }
 
   function renderEvents(events){
     clearTicks();
-    const dlList = document.getElementById('dl-list');
-    const otherList = document.getElementById('other-list');
+    const dlList=document.getElementById('dl-list');
+    const otherList=document.getElementById('other-list');
     dlList.innerHTML=''; otherList.innerHTML='';
-    const reminders = JSON.parse(localStorage.getItem(REM_KEY)||'{}');
-    const filtered = events.filter(filterEvent).sort((a,b)=>new Date(a.start)-new Date(b.start));
+    const reminders=JSON.parse(localStorage.getItem(REM_KEY)||'{}');
+    const filtered=events.filter(filterEvent).sort((a,b)=>new Date(a.start)-new Date(b.start));
     if(!filtered.length){
-      const noMsg=document.createElement('div'); noMsg.className='no-events'; noMsg.textContent='No events for this selection.';
-      dlList.appendChild(noMsg); otherList.appendChild(noMsg.cloneNode(true));
-      window.scrollTo({top:0,behavior:'smooth'}); return;
+      const noMsg=document.createElement('div');
+      noMsg.className='no-events';
+      noMsg.textContent='No events for this selection.';
+      dlList.appendChild(noMsg);
+      otherList.appendChild(noMsg.cloneNode(true));
+      window.scrollTo({top:0,behavior:'smooth'});return;
     }
-    const isMobile = window.innerWidth<=768;
-    const useSingleList = isMobile && currentTypeFilter==='all';
+
+    const isMobile=window.innerWidth<=768;
+    const useSingleList=isMobile&&currentTypeFilter==='all';
+
     filtered.forEach((ev,idx)=>{
       const evText=(ev.summary||'')+' '+(ev.description||'');
-      const isDL = /distance learning/i.test(evText);
-      const el=document.createElement('div'); el.className='event '+(isDL?'distance-learning':'other');
-      const title=document.createElement('div'); title.textContent=ev.summary||'(no title)'; title.style.fontWeight='700'; el.appendChild(title);
-      const meta=document.createElement('div'); meta.className='meta';
-      const sISO=formatDateDDMM(ev.start), eISO=ev.end?formatDateDDMM(ev.end):'';
-      meta.innerHTML=`${ev.location?ev.location+' • ':''}<small>${sISO}${eISO?' — '+eISO:''}</small>`; el.appendChild(meta);
-      const count=document.createElement('div'); count.className='count';
-      const safeId=encodeURIComponent((ev.summary||'')+(ev.start||'')); count.id='count-'+safeId; el.appendChild(count);
+      const isDL=/distance learning/i.test(evText);
+      const el=document.createElement('div');
+      el.className='event '+(isDL?'distance-learning':'other');
+      const title=document.createElement('div');
+      title.textContent=ev.summary||'(no title)';
+      title.style.fontWeight='700';
+      el.appendChild(title);
+
+      const meta=document.createElement('div');
+      meta.className='meta';
+      const sISO=formatDateDDMM(ev.start),eISO=ev.end?formatDateDDMM(ev.end):'';
+      meta.innerHTML=`${ev.location?ev.location+' • ':''}<small>${sISO}${eISO?' — '+eISO:''}</small>`;
+      el.appendChild(meta);
+
+      const count=document.createElement('div');
+      count.className='count';
+      const safeId=encodeURIComponent((ev.summary||'')+(ev.start||''));
+      count.id='count-'+safeId;
+      el.appendChild(count);
+
       if(useSingleList) dlList.appendChild(el);
       else if(isDL) dlList.appendChild(el);
       else otherList.appendChild(el);
+
       setTimeout(()=>el.classList.add('show'),idx*50);
+
       const key20=(ev.summary||'')+(ev.start||'')+'::20';
       const keyStart=(ev.summary||'')+(ev.start||'')+'::start';
+
       function tick(){
-        const now=Date.now(); const startTime=new Date(ev.start).getTime(); const diff=startTime-now;
-        const elc=document.getElementById('count-'+safeId); if(!elc||!el.parentNode) return;
-        if(diff<=-20*60*1000){ el.parentNode.removeChild(el); clearInterval(tickIntervals[safeId]); return; }
+        const now=Date.now();
+        const startTime=new Date(ev.start).getTime();
+        const diff=startTime-now;
+        const elc=document.getElementById('count-'+safeId);
+        if(!elc||!el.parentNode)return;
+
+        // fade remove expired
+        if(diff<=-20*60*1000){
+          el.style.opacity='0';
+          setTimeout(()=>{if(el.parentNode)el.parentNode.removeChild(el);},400);
+          clearInterval(tickIntervals[safeId]);
+          return;
+        }
+
         if(diff<=20*60*1000) el.classList.add('starting-soon');
+
         if(diff<=0){
           elc.textContent='Starting now!';
-          if(!reminders[keyStart]){ showNotification('Starting: '+(ev.summary||'Event'),ev.location||''); reminders[keyStart]=true; localStorage.setItem(REM_KEY,JSON.stringify(reminders)); }
+          if(!reminders[keyStart]){
+            showNotification('Starting: '+(ev.summary||'Event'),ev.location||'');
+            reminders[keyStart]=true;
+            localStorage.setItem(REM_KEY,JSON.stringify(reminders));
+          }
         } else {
           const days=Math.floor(diff/(1000*60*60*24));
           const hrs=Math.floor((diff%(1000*60*60*24))/(1000*60*60));
           const mins=Math.floor((diff%(1000*60*60))/(1000*60));
           const secs=Math.floor((diff%(1000*60))/1000);
-          let parts=[]; if(days) parts.push(days+'d'); parts.push(`${hrs}h ${mins}m ${secs}s`);
+          let parts=[];
+          if(days)parts.push(days+'d');
+          parts.push(`${hrs}h ${mins}m ${secs}s`);
           elc.textContent=parts.join(' ');
         }
-        if(diff<=20*60*1000 && !reminders[key20]){ showNotification('Reminder: '+(ev.summary||'Event'),`Starts in ~20 minutes — ${ev.location||''}`); reminders[key20]=true; localStorage.setItem(REM_KEY,JSON.stringify(reminders)); }
+
+        if(diff<=20*60*1000&&!reminders[key20]){
+          showNotification('Reminder: '+(ev.summary||'Event'),
+            `Starts in ~20 minutes — ${ev.location||''}`);
+          reminders[key20]=true;
+          localStorage.setItem(REM_KEY,JSON.stringify(reminders));
+        }
       }
       tick(); tickIntervals[safeId]=setInterval(tick,1000);
     });
+
+    // highlight nearest upcoming
+    if(filtered.length){
+      const firstEl=(useSingleList?dlList:dlList.querySelectorAll('.event').length?dlList:otherList)
+        .querySelector('.event');
+      if(firstEl) firstEl.classList.add('upcoming');
+    }
+
     if(useSingleList) otherList.innerHTML='';
-    window.scrollTo({top:0,behavior:'smooth'});
+    setTimeout(()=>window.scrollTo({top:0,behavior:'smooth'}),100);
   }
 
   async function fetchAndRender(){
@@ -192,12 +338,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const hash=text.slice(0,200);
       if(renderedHash!==hash){ renderedHash=hash; eventsData=JSON.parse(text); }
       renderEvents(eventsData);
-    } catch(err){
+    }catch(err){
       console.error(err);
-      document.getElementById('dl-list').innerHTML=`<div style="color:red;">Failed to load JSON.<br>${err.message}</div>`;
+      document.getElementById('dl-list').innerHTML=
+        `<div style="color:red;">Failed to load JSON.<br>${err.message}</div>`;
     }
   }
 
+  // Filters
   document.querySelectorAll('[role="region"][aria-label="Time Filters"] button').forEach(btn=>{
     btn.addEventListener('click',()=>{
       currentTimeFilter=btn.dataset.filter;
@@ -226,9 +374,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Dark mode toggle
   const darkBtn=document.getElementById('dark-toggle');
-  if(localStorage.getItem('darkMode')==='true') document.body.classList.add('dark');
-  darkBtn.addEventListener('click',()=>{ document.body.classList.toggle('dark'); localStorage.setItem('darkMode',document.body.classList.contains('dark')); });
+  if(localStorage.getItem('darkMode')==='true')document.body.classList.add('dark');
+  darkBtn.addEventListener('click',()=>{
+    document.body.classList.toggle('dark');
+    localStorage.setItem('darkMode',document.body.classList.contains('dark'));
+  });
+
+  // Scroll to top button logic
+  const scrollBtn=document.getElementById('scrollTopBtn');
+  window.addEventListener('scroll',()=>{
+    if(window.scrollY>200) scrollBtn.classList.add('show');
+    else scrollBtn.classList.remove('show');
+  });
+  scrollBtn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 
   fetchAndRender();
   setInterval(fetchAndRender,300000);
