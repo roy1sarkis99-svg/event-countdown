@@ -1,29 +1,134 @@
 [
   {
+    "summary": "1:00 to 3:00 - Assistance - Jocelyne Assi, Ext: 2894",
+    "start": "2025-10-22 13:00:00+03:00",
+    "end": "2025-10-22 15:00:00+03:00",
+    "location": "SC.606",
+    "description": " \n"
+  },
+  {
+    "summary": "5:00 to 7:30 - Assistance - Stephanie Ibrahim, Ext: 2035",
+    "start": "2025-10-21 17:00:00+03:00",
+    "end": "2025-10-21 19:30:00+03:00",
+    "location": "SC.402 - Serial#: 131375",
+    "description": " \n"
+  },
+  {
+    "summary": "5:00 to 7:30 - Distance Learning - Jana El Moujabber, Ext: 2914",
+    "start": "2025-10-23 17:00:00+03:00",
+    "end": "2025-10-23 19:30:00+03:00",
+    "location": "215 and SC.103",
+    "description": " \n"
+  },
+  {
+    "summary": "5:00 to 6:00 - Assistance - Grace El Khoury",
+    "start": "2025-10-21 17:00:00+03:00",
+    "end": "2025-10-21 18:00:00+03:00",
+    "location": "Fcc.205 - Serial#: 131278",
+    "description": " \n"
+  },
+  {
+    "summary": "5:00 to 7:30 - Assistance - Hassan Cherry, Ext: 2573",
+    "start": "2025-10-24 17:00:00+03:00",
+    "end": "2025-10-24 19:30:00+03:00",
+    "location": "Serial#: 131008",
+    "description": " \n"
+  },
+  {
+    "summary": "4:00 to 6:30 - Assistance - Hassan Cherry, Ext: 2573",
+    "start": "2025-10-24 16:00:00+03:00",
+    "end": "2025-10-24 18:30:00+03:00",
+    "location": "Fcc.205 - Serial#: 131014",
+    "description": " \n"
+  },
+  {
+    "summary": "2:00 to 2:50 - Distance Learning - Georgina Elias, Ext: 2355",
+    "start": "2025-10-22 14:00:00+03:00",
+    "end": "2025-10-22 14:50:00+03:00",
+    "location": "AKSOB1208 and Fcc402",
+    "description": " \n"
+  },
+  {
+    "summary": "2:00 to 2:50 - Distance Learning - Georgina Elias, Ext: 2355",
+    "start": "2025-10-24 14:00:00+03:00",
+    "end": "2025-10-24 14:50:00+03:00",
+    "location": "AKSOB1208 and Fcc402",
+    "description": " \n"
+  },
+  {
+    "summary": "2:00 to 2:50 - Distance Learning - Georgina Elias, Ext: 2355",
+    "start": "2025-10-27 14:00:00+02:00",
+    "end": "2025-10-27 14:50:00+02:00",
+    "location": "AKSOB1208 and Fcc402",
+    "description": " \n"
+  },
+  {
+    "summary": "9:00 to 4:30 - Assistance - Carol Khater, Ext: 1259",
+    "start": "2025-10-21 09:00:00+03:00",
+    "end": "2025-10-21 16:30:00+03:00",
+    "location": "Fcc.201",
+    "description": " \n"
+  },
+  {
+    "summary": "9:00 to 4:30 - Assistance - Carol Khater, Ext: 1259",
+    "start": "2025-10-22 09:00:00+03:00",
+    "end": "2025-10-22 16:30:00+03:00",
+    "location": "Fcc.201",
+    "description": " \n"
+  },
+  {
+    "summary": "9:30 to 10:45 - Distance Learning - Stephany El Bitar, Ext: 2483",
+    "start": "2025-10-21 09:30:00+03:00",
+    "end": "2025-10-21 10:45:00+03:00",
+    "location": "NH.215 and SC.103",
+    "description": " \n"
+  },
+  {
+    "summary": "9:30 to 10:45 - Distance Learning - Stephany El Bitar, Ext: 2483",
+    "start": "2025-10-23 09:30:00+03:00",
+    "end": "2025-10-23 10:45:00+03:00",
+    "location": "NH.215 and SC.103",
+    "description": " \n"
+  },
+  {
+    "summary": "7:30 to 9:30 - Distance Learning - Elias Akoury",
+    "start": "2025-10-21 07:30:00+03:00",
+    "end": "2025-10-21 09:30:00+03:00",
+    "location": "Nicol.217 and SC.403 ",
+    "description": " \n"
+  },
+  {
+    "summary": "7:30 to 9:30 - Distance Learning - Elias Akoury",
+    "start": "2025-10-23 07:30:00+03:00",
+    "end": "2025-10-23 09:30:00+03:00",
+    "location": "Nicol.217 and SC.403 ",
+    "description": " \n"
+  },
+  {
     "summary": "3:00 to 5:00 - WEBEX + Hybrid Microphone - Dina Noueiri",
-    "start": "2025-10-20 15:00:00+03:00",
-    "end": "2025-10-20 17:00:00+03:00",
+    "start": "2025-10-27 15:00:00+02:00",
+    "end": "2025-10-27 17:00:00+02:00",
     "location": "NH.305 and Eng.506  Username:sc.soas.by04   Pass:Sas@By7602",
     "description": " \n"
   },
   {
     "summary": "3:00 to 5:00 - WEBEX + Hybrid Microphone - Dina Noueiri",
-    "start": "2025-10-20 15:00:00+03:00",
-    "end": "2025-10-20 17:00:00+03:00",
+    "start": "2025-10-27 15:00:00+02:00",
+    "end": "2025-10-27 17:00:00+02:00",
     "location": "NH.312 and SC.103",
     "description": " \n"
   },
   {
     "summary": "C A N C E L E D - Assistance - Rouba Abi Assaad Hakim, Ext: 2521",
-    "start": "2025-10-16 10:00:00+03:00",
-    "end": "2025-10-16 11:30:00+03:00",
+    "start": "2025-10-23 10:00:00+03:00",
+    "end": "2025-10-23 11:30:00+03:00",
     "location": "Block A-710 - Serial#: 129005",
     "description": " \n"
   },
   {
     "summary": "9:30 to 10:30 - Assistance - Lorita Hanna, Ext: 2481",
-    "start": "2025-10-14 09:30:00+03:00",
-    "end": "2025-10-14 10:30:00+03:00",
+    "start": "2025-10-21 09:30:00+03:00",
+    "end": "2025-10-21 10:30:00+03:00",
     "location": "Block A-811 ",
     "description": " \n"
   },
@@ -35,478 +140,359 @@
     "description": " \n"
   },
   {
+    "summary": "5:00 to 7:30 - Distance Learning - Dina Noueiri",
+    "start": "2025-10-27 17:00:00+02:00",
+    "end": "2025-10-27 19:30:00+02:00",
+    "location": "NH.215 and SC.103",
+    "description": " \n"
+  },
+  {
     "summary": "C A N C E L E D - Distance Learning - Jana El Moujabber, Ext: 2914",
-    "start": "2025-10-17 17:00:00+03:00",
-    "end": "2025-10-17 19:30:00+03:00",
+    "start": "2025-10-24 17:00:00+03:00",
+    "end": "2025-10-24 19:30:00+03:00",
     "location": "215 and SC.403",
     "description": " \n"
   },
   {
     "summary": "5:00 to 7:30 - Distance Learning - Georgina Elias, Ext: 2355",
-    "start": "2025-10-17 17:00:00+03:00",
-    "end": "2025-10-17 19:30:00+03:00",
+    "start": "2025-10-24 17:00:00+03:00",
+    "end": "2025-10-24 19:30:00+03:00",
     "location": "AKSOB1208 and SC.103",
     "description": " \n"
   },
   {
     "summary": "4:00 to 6:30 - Distance Learning - Georgina Elias, Ext: 2355",
-    "start": "2025-10-17 16:00:00+03:00",
-    "end": "2025-10-17 18:30:00+03:00",
+    "start": "2025-10-24 16:00:00+03:00",
+    "end": "2025-10-24 18:30:00+03:00",
     "location": "AKSOB1208 and Fcc.402",
     "description": " \n"
   },
   {
     "summary": "5:00 to 6:40 - Distance Learning - Jana El Moujabber, Ext: 2914",
-    "start": "2025-10-15 17:00:00+03:00",
-    "end": "2025-10-15 18:40:00+03:00",
+    "start": "2025-10-22 17:00:00+03:00",
+    "end": "2025-10-22 18:40:00+03:00",
     "location": "1208 and SC.103",
     "description": " \n"
   },
   {
     "summary": "5:00 to 6:15 - Distance Learning - Georgina Elias, Ext: 2355",
-    "start": "2025-10-14 17:00:00+03:00",
-    "end": "2025-10-14 18:15:00+03:00",
+    "start": "2025-10-21 17:00:00+03:00",
+    "end": "2025-10-21 18:15:00+03:00",
     "location": "AKSOB1208 and Fcc402",
     "description": " \n"
   },
   {
     "summary": "5:00 to 6:15 - Distance Learning - Georgina Elias, Ext: 2355",
-    "start": "2025-10-16 17:00:00+03:00",
-    "end": "2025-10-16 18:15:00+03:00",
+    "start": "2025-10-23 17:00:00+03:00",
+    "end": "2025-10-23 18:15:00+03:00",
     "location": "AKSOB1208 and Fcc402",
     "description": " \n"
   },
   {
     "summary": "3:30 to 4:45 - Distance Learning - Georgina Elias, Ext: 2355",
-    "start": "2025-10-14 15:30:00+03:00",
-    "end": "2025-10-14 16:45:00+03:00",
+    "start": "2025-10-21 15:30:00+03:00",
+    "end": "2025-10-21 16:45:00+03:00",
     "location": "AKSOB1208 and Fcc402",
     "description": " \n"
   },
   {
     "summary": "3:30 to 4:45 - Distance Learning - Georgina Elias, Ext: 2355",
-    "start": "2025-10-16 15:30:00+03:00",
-    "end": "2025-10-16 16:45:00+03:00",
+    "start": "2025-10-23 15:30:00+03:00",
+    "end": "2025-10-23 16:45:00+03:00",
     "location": "AKSOB1208 and Fcc402",
     "description": " \n"
   },
   {
     "summary": "3:30 to 4:45 - Distance Learning - Dina Noueiri",
-    "start": "2025-10-14 15:30:00+03:00",
-    "end": "2025-10-14 16:45:00+03:00",
+    "start": "2025-10-21 15:30:00+03:00",
+    "end": "2025-10-21 16:45:00+03:00",
     "location": "NH.215 and SC.403",
     "description": " \n"
   },
   {
     "summary": "3:30 to 4:45 - Distance Learning - Dina Noueiri",
-    "start": "2025-10-16 15:30:00+03:00",
-    "end": "2025-10-16 16:45:00+03:00",
+    "start": "2025-10-23 15:30:00+03:00",
+    "end": "2025-10-23 16:45:00+03:00",
     "location": "NH.215 and SC.403",
     "description": " \n"
   },
   {
     "summary": "2:00 to 3:15 - Distance Learning - Georgina Elias, Ext: 2355",
-    "start": "2025-10-14 14:00:00+03:00",
-    "end": "2025-10-14 15:15:00+03:00",
+    "start": "2025-10-21 14:00:00+03:00",
+    "end": "2025-10-21 15:15:00+03:00",
     "location": "AKSOB1208 and Fcc402",
     "description": " \n"
   },
   {
     "summary": "2:00 to 3:15 - Distance Learning - Georgina Elias, Ext: 2355",
-    "start": "2025-10-16 14:00:00+03:00",
-    "end": "2025-10-16 15:15:00+03:00",
+    "start": "2025-10-23 14:00:00+03:00",
+    "end": "2025-10-23 15:15:00+03:00",
     "location": "AKSOB1208 and Fcc402",
     "description": " \n"
   },
   {
     "summary": "11:00 to 12:15 - Distance Learning - Houry Ghostanian, Ext:",
-    "start": "2025-10-14 11:00:00+03:00",
-    "end": "2025-10-14 12:15:00+03:00",
+    "start": "2025-10-21 11:00:00+03:00",
+    "end": "2025-10-21 12:15:00+03:00",
     "location": "Nicol.215 and SC.103",
     "description": " \n"
   },
   {
     "summary": "11:00 to 12:15 - Distance Learning - Houry Ghostanian, Ext:",
-    "start": "2025-10-16 11:00:00+03:00",
-    "end": "2025-10-16 12:15:00+03:00",
+    "start": "2025-10-23 11:00:00+03:00",
+    "end": "2025-10-23 12:15:00+03:00",
     "location": "Nicol.215 and SC.103",
     "description": " \n"
   },
   {
     "summary": "11:00 to 1:15 - Distance Learning - Georgina Elias, Ext: 2355",
-    "start": "2025-10-14 11:00:00+03:00",
-    "end": "2025-10-14 13:15:00+03:00",
+    "start": "2025-10-21 11:00:00+03:00",
+    "end": "2025-10-21 13:15:00+03:00",
     "location": "AKSOB1208 and Fcc.402",
     "description": " \n"
   },
   {
     "summary": "11:00 to 1:15 - Distance Learning - Georgina Elias, Ext: 2355",
-    "start": "2025-10-16 11:00:00+03:00",
-    "end": "2025-10-16 13:15:00+03:00",
+    "start": "2025-10-23 11:00:00+03:00",
+    "end": "2025-10-23 13:15:00+03:00",
     "location": "AKSOB1208 and Fcc.402",
     "description": " \n"
   },
   {
     "summary": "9:30 to 11:00 - Distance Learning - Georgina Elias, Ext: 2355",
-    "start": "2025-10-14 09:30:00+03:00",
-    "end": "2025-10-14 11:00:00+03:00",
+    "start": "2025-10-21 09:30:00+03:00",
+    "end": "2025-10-21 11:00:00+03:00",
     "location": "AKSOB1208 and Fcc.402",
     "description": " \n"
   },
   {
     "summary": "9:30 to 11:00 - Distance Learning - Georgina Elias, Ext: 2355",
-    "start": "2025-10-16 09:30:00+03:00",
-    "end": "2025-10-16 11:00:00+03:00",
+    "start": "2025-10-23 09:30:00+03:00",
+    "end": "2025-10-23 11:00:00+03:00",
     "location": "AKSOB1208 and Fcc.402",
     "description": " \n"
   },
   {
     "summary": "12:00 to 12:50 - Distance Learning - Georgina Elias, Ext: 2355",
-    "start": "2025-10-15 12:00:00+03:00",
-    "end": "2025-10-15 12:50:00+03:00",
+    "start": "2025-10-22 12:00:00+03:00",
+    "end": "2025-10-22 12:50:00+03:00",
     "location": "AKSOB1208 and Fcc.402",
     "description": " \n"
   },
   {
     "summary": "12:00 to 12:50 - Distance Learning - Georgina Elias, Ext: 2355",
-    "start": "2025-10-17 12:00:00+03:00",
-    "end": "2025-10-17 12:50:00+03:00",
+    "start": "2025-10-24 12:00:00+03:00",
+    "end": "2025-10-24 12:50:00+03:00",
     "location": "AKSOB1208 and Fcc.402",
     "description": " \n"
   },
   {
     "summary": "12:00 to 12:50 - Distance Learning - Georgina Elias, Ext: 2355",
-    "start": "2025-10-20 12:00:00+03:00",
-    "end": "2025-10-20 12:50:00+03:00",
+    "start": "2025-10-27 12:00:00+02:00",
+    "end": "2025-10-27 12:50:00+02:00",
     "location": "AKSOB1208 and Fcc.402",
     "description": " \n"
   },
   {
     "summary": "11:00 to 11:50 - Distance Learning - Georgina Elias, Ext: 2355",
-    "start": "2025-10-15 11:00:00+03:00",
-    "end": "2025-10-15 11:50:00+03:00",
+    "start": "2025-10-22 11:00:00+03:00",
+    "end": "2025-10-22 11:50:00+03:00",
     "location": "AKSOB1208 and Fcc.402",
     "description": " \n"
   },
   {
     "summary": "11:00 to 11:50 - Distance Learning - Georgina Elias, Ext: 2355",
-    "start": "2025-10-17 11:00:00+03:00",
-    "end": "2025-10-17 11:50:00+03:00",
+    "start": "2025-10-24 11:00:00+03:00",
+    "end": "2025-10-24 11:50:00+03:00",
     "location": "AKSOB1208 and Fcc.402",
     "description": " \n"
   },
   {
     "summary": "11:00 to 11:50 - Distance Learning - Georgina Elias, Ext: 2355",
-    "start": "2025-10-20 11:00:00+03:00",
-    "end": "2025-10-20 11:50:00+03:00",
+    "start": "2025-10-27 11:00:00+02:00",
+    "end": "2025-10-27 11:50:00+02:00",
     "location": "AKSOB1208 and Fcc.402",
     "description": " \n"
   },
   {
     "summary": "3:30 to 5:00 - Distance Learning - Houry Ghostanian",
-    "start": "2025-10-14 15:30:00+03:00",
-    "end": "2025-10-14 17:00:00+03:00",
+    "start": "2025-10-21 15:30:00+03:00",
+    "end": "2025-10-21 17:00:00+03:00",
     "location": "Nicol.217 and SC.103",
     "description": " \n"
   },
   {
     "summary": "3:30 to 5:00 - Distance Learning - Houry Ghostanian",
-    "start": "2025-10-16 15:30:00+03:00",
-    "end": "2025-10-16 17:00:00+03:00",
+    "start": "2025-10-23 15:30:00+03:00",
+    "end": "2025-10-23 17:00:00+03:00",
     "location": "Nicol.217 and SC.103",
     "description": " \n"
   },
   {
     "summary": "2:00 to 3:15 - Distance Learning - Houry Ghostanian",
-    "start": "2025-10-14 14:00:00+03:00",
-    "end": "2025-10-14 15:15:00+03:00",
+    "start": "2025-10-21 14:00:00+03:00",
+    "end": "2025-10-21 15:15:00+03:00",
     "location": "Nicol.215 and SC.103",
     "description": " \n"
   },
   {
     "summary": "2:00 to 3:15 - Distance Learning - Houry Ghostanian",
-    "start": "2025-10-16 14:00:00+03:00",
-    "end": "2025-10-16 15:15:00+03:00",
+    "start": "2025-10-23 14:00:00+03:00",
+    "end": "2025-10-23 15:15:00+03:00",
     "location": "Nicol.215 and SC.103",
     "description": " \n"
   },
   {
     "summary": "12:30 to 1:45 - Distance Learning - Houry Ghostanian, Ext: ",
-    "start": "2025-10-14 12:30:00+03:00",
-    "end": "2025-10-14 13:45:00+03:00",
+    "start": "2025-10-21 12:30:00+03:00",
+    "end": "2025-10-21 13:45:00+03:00",
     "location": "Nicole.215 and SC.103",
     "description": " \n"
   },
   {
     "summary": "12:30 to 1:45 - Distance Learning - Houry Ghostanian, Ext: ",
-    "start": "2025-10-16 12:30:00+03:00",
-    "end": "2025-10-16 13:45:00+03:00",
+    "start": "2025-10-23 12:30:00+03:00",
+    "end": "2025-10-23 13:45:00+03:00",
     "location": "Nicole.215 and SC.103",
     "description": " \n"
   },
   {
     "summary": "2:00 to 2:50 - Distance Learning - Jana El Moujabber, Ext: 2914",
-    "start": "2025-10-15 14:00:00+03:00",
-    "end": "2025-10-15 14:50:00+03:00",
+    "start": "2025-10-22 14:00:00+03:00",
+    "end": "2025-10-22 14:50:00+03:00",
     "location": "217 and SC.103",
     "description": " \n"
   },
   {
     "summary": "2:00 to 2:50 - Distance Learning - Jana El Moujabber, Ext: 2914",
-    "start": "2025-10-17 14:00:00+03:00",
-    "end": "2025-10-17 14:50:00+03:00",
+    "start": "2025-10-24 14:00:00+03:00",
+    "end": "2025-10-24 14:50:00+03:00",
     "location": "217 and SC.103",
     "description": " \n"
   },
   {
     "summary": "2:00 to 2:50 - Distance Learning - Jana El Moujabber, Ext: 2914",
-    "start": "2025-10-20 14:00:00+03:00",
-    "end": "2025-10-20 14:50:00+03:00",
+    "start": "2025-10-27 14:00:00+02:00",
+    "end": "2025-10-27 14:50:00+02:00",
     "location": "217 and SC.103",
     "description": " \n"
   },
   {
     "summary": "1:00 to 1:50 - Distance Learning - Houry Ghostanian",
-    "start": "2025-10-15 13:00:00+03:00",
-    "end": "2025-10-15 13:50:00+03:00",
+    "start": "2025-10-22 13:00:00+03:00",
+    "end": "2025-10-22 13:50:00+03:00",
     "location": "Nicol.215 and SC.103",
     "description": " \n"
   },
   {
     "summary": "1:00 to 1:50 - Distance Learning - Houry Ghostanian",
-    "start": "2025-10-17 13:00:00+03:00",
-    "end": "2025-10-17 13:50:00+03:00",
+    "start": "2025-10-24 13:00:00+03:00",
+    "end": "2025-10-24 13:50:00+03:00",
     "location": "Nicol.215 and SC.103",
     "description": " \n"
   },
   {
     "summary": "1:00 to 1:50 - Distance Learning - Houry Ghostanian",
-    "start": "2025-10-20 13:00:00+03:00",
-    "end": "2025-10-20 13:50:00+03:00",
+    "start": "2025-10-27 13:00:00+02:00",
+    "end": "2025-10-27 13:50:00+02:00",
     "location": "Nicol.215 and SC.103",
     "description": " \n"
   },
   {
     "summary": "11:00 to 11:50 - Distance Learning - Jana El Moujaber,Ext: 2914",
-    "start": "2025-10-15 11:00:00+03:00",
-    "end": "2025-10-15 11:50:00+03:00",
+    "start": "2025-10-22 11:00:00+03:00",
+    "end": "2025-10-22 11:50:00+03:00",
     "location": "Nicol 215 and SC.103",
     "description": " \n"
   },
   {
     "summary": "11:00 to 11:50 - Distance Learning - Jana El Moujaber,Ext: 2914",
-    "start": "2025-10-17 11:00:00+03:00",
-    "end": "2025-10-17 11:50:00+03:00",
+    "start": "2025-10-24 11:00:00+03:00",
+    "end": "2025-10-24 11:50:00+03:00",
     "location": "Nicol 215 and SC.103",
     "description": " \n"
   },
   {
     "summary": "11:00 to 11:50 - Distance Learning - Jana El Moujaber,Ext: 2914",
-    "start": "2025-10-20 11:00:00+03:00",
-    "end": "2025-10-20 11:50:00+03:00",
+    "start": "2025-10-27 11:00:00+02:00",
+    "end": "2025-10-27 11:50:00+02:00",
     "location": "Nicol 215 and SC.103",
     "description": " \n"
   },
   {
     "summary": "5:00 to 7:30 - Distance Learning - Dina Noueiri",
-    "start": "2025-10-14 17:00:00+03:00",
-    "end": "2025-10-14 19:30:00+03:00",
+    "start": "2025-10-21 17:00:00+03:00",
+    "end": "2025-10-21 19:30:00+03:00",
     "location": "Nicol 215 and SC.403",
     "description": " \n"
   },
   {
     "summary": "11:00 to 11:50 - Distance Learning - Alissar Elbakht,  Ext: 2320",
-    "start": "2025-10-14 11:00:00+03:00",
-    "end": "2025-10-14 11:50:00+03:00",
+    "start": "2025-10-21 11:00:00+03:00",
+    "end": "2025-10-21 11:50:00+03:00",
     "location": "Nicol.217 and SC.403",
     "description": " \n"
   },
   {
     "summary": "11:00 to 11:50 - Distance Learning - Alissar Elbakht,  Ext: 2320",
-    "start": "2025-10-16 11:00:00+03:00",
-    "end": "2025-10-16 11:50:00+03:00",
+    "start": "2025-10-23 11:00:00+03:00",
+    "end": "2025-10-23 11:50:00+03:00",
     "location": "Nicol.217 and SC.403",
     "description": " \n"
   },
   {
     "summary": "9:30 to 10:45 - Distance Learning - Alissar Elbakht, Ext:2320",
-    "start": "2025-10-14 09:30:00+03:00",
-    "end": "2025-10-14 10:45:00+03:00",
+    "start": "2025-10-21 09:30:00+03:00",
+    "end": "2025-10-21 10:45:00+03:00",
     "location": "Nicol.217 and SC.403",
     "description": " \n"
   },
   {
     "summary": "9:30 to 10:45 - Distance Learning - Alissar Elbakht, Ext:2320",
-    "start": "2025-10-16 09:30:00+03:00",
-    "end": "2025-10-16 10:45:00+03:00",
+    "start": "2025-10-23 09:30:00+03:00",
+    "end": "2025-10-23 10:45:00+03:00",
     "location": "Nicol.217 and SC.403",
     "description": " \n"
   },
   {
-    "summary": "8:00 to 5:00 - Assistance + Open Smart classes - Ghina Harb, Ext: 18443",
-    "start": "2025-10-18 08:00:00+03:00",
-    "end": "2025-10-18 17:00:00+03:00",
-    "location": "",
-    "description": "*\tSC 607-608, FCC 201, FCC 203-204\n*\tSC: 402,403,404,405,406,407\n*\tARC: 202\n*\tZH: 401,402,403,404,405,406,502,503,504,505,506,507,508,509,605,606,607,701,702\n*\tFCC: 103A, 103B, 103G, 103H, 205,302,303,402,403,404,406,502,503,504,506\n*\tCHSC: 1205,5100,5400,5401,5500,5505,5506,5507,5510\n*\tSelina Korban\n*\tStudent Lounge\n \n"
-  },
-  {
-    "summary": "7:30 to 9:30 - Distance Learning - Elias Akoury",
-    "start": "2025-10-14 07:30:00+03:00",
-    "end": "2025-10-14 09:30:00+03:00",
-    "location": "Nicol.217 and SC.403 ",
+    "summary": "5:30 to 6:30 - Assistance - Joy El Helou",
+    "start": "2025-10-23 17:30:00+03:00",
+    "end": "2025-10-23 18:30:00+03:00",
+    "location": "SC.607-608 - Serial#: 193719",
     "description": " \n"
   },
   {
-    "summary": "7:30 to 9:30 - Distance Learning - Elias Akoury",
-    "start": "2025-10-16 07:30:00+03:00",
-    "end": "2025-10-16 09:30:00+03:00",
-    "location": "Nicol.217 and SC.403 ",
+    "summary": "12:00 to 12:30 - Assistance + Pointer - Stephany El Bitar, Ext: 2483",
+    "start": "2025-10-22 12:00:00+03:00",
+    "end": "2025-10-22 12:30:00+03:00",
+    "location": "SC.606 - Serial#: 193722",
     "description": " \n"
   },
   {
-    "summary": "7:30 to 9:30 - Distance Learning - Elias Akoury",
-    "start": "2025-10-21 07:30:00+03:00",
-    "end": "2025-10-21 09:30:00+03:00",
-    "location": "Nicol.217 and SC.403 ",
+    "summary": "2:00 to 3:00 - Assistance + Laptop + Pointer - Stephany El Bitar, Ext: 2483",
+    "start": "2025-10-27 14:00:00+02:00",
+    "end": "2025-10-27 15:00:00+02:00",
+    "location": "Block A-710 - Serial#: 197148",
     "description": " \n"
   },
   {
-    "summary": "9:30 to 10:45 - Distance Learning - Stephany El Bitar, Ext: 2483",
-    "start": "2025-10-14 09:30:00+03:00",
-    "end": "2025-10-14 10:45:00+03:00",
-    "location": "NH.215 and SC.103",
+    "summary": "5:00 to 6:00 - Assistance - Joy El Helou",
+    "start": "2025-10-23 17:00:00+03:00",
+    "end": "2025-10-23 18:00:00+03:00",
+    "location": "SC.606 - Serial#: 197150",
     "description": " \n"
   },
   {
-    "summary": "9:30 to 10:45 - Distance Learning - Stephany El Bitar, Ext: 2483",
-    "start": "2025-10-16 09:30:00+03:00",
-    "end": "2025-10-16 10:45:00+03:00",
-    "location": "NH.215 and SC.103",
+    "summary": "4:00 to 5:00 - Assistance + Pointer - Stephany El Bitar, Ext: 2483",
+    "start": "2025-10-23 16:00:00+03:00",
+    "end": "2025-10-23 17:00:00+03:00",
+    "location": "SC.606 - Serial#: 197140",
     "description": " \n"
   },
   {
-    "summary": "2:00 to 2:50 - Distance Learning - Georgina Elias, Ext: 2355",
-    "start": "2025-10-15 14:00:00+03:00",
-    "end": "2025-10-15 14:50:00+03:00",
-    "location": "AKSOB1208 and Fcc402",
-    "description": " \n"
-  },
-  {
-    "summary": "2:00 to 2:50 - Distance Learning - Georgina Elias, Ext: 2355",
-    "start": "2025-10-17 14:00:00+03:00",
-    "end": "2025-10-17 14:50:00+03:00",
-    "location": "AKSOB1208 and Fcc402",
-    "description": " \n"
-  },
-  {
-    "summary": "2:00 to 2:50 - Distance Learning - Georgina Elias, Ext: 2355",
-    "start": "2025-10-20 14:00:00+03:00",
-    "end": "2025-10-20 14:50:00+03:00",
-    "location": "AKSOB1208 and Fcc402",
-    "description": " \n"
-  },
-  {
-    "summary": "1:00 to 5:00 - VC Nicol.406 and Fcc.203 - Loubna Asmar, Ext: 1740",
-    "start": "2025-10-16 13:00:00+03:00",
-    "end": "2025-10-16 17:00:00+03:00",
-    "location": "Serial#: 129470",
-    "description": " \n"
-  },
-  {
-    "summary": "12:45 to 3:45 - Assistance + Pointer - Stephany El Bitar, Ext: 2483",
-    "start": "2025-10-20 12:45:00+03:00",
-    "end": "2025-10-20 15:45:00+03:00",
-    "location": "SC.606 - Serial#: 131101",
-    "description": " \n"
-  },
-  {
-    "summary": "12:15 to 2:00 - Assistance + Laptop - Nicole Bou Farhat, Ext: 2534",
-    "start": "2025-10-16 12:15:00+03:00",
-    "end": "2025-10-16 14:00:00+03:00",
-    "location": "Sc.607-608 - Serial#: 131199",
-    "description": " \n"
-  },
-  {
-    "summary": "5:00 to 7:30 - Distance Learning - Jana El Moujabber, Ext: 2914",
-    "start": "2025-10-16 17:00:00+03:00",
-    "end": "2025-10-16 19:30:00+03:00",
-    "location": "215 and SC.103",
-    "description": " \n"
-  },
-  {
-    "summary": "3:00 to 5:30 - Connect \"TEAMS\" - Marie Sili, Ext: 2897",
-    "start": "2025-10-14 15:00:00+03:00",
-    "end": "2025-10-14 17:30:00+03:00",
-    "location": "SOP.6116 - Meeting ID: 229 839 133 791 - Passcode: TU2tq9B7 ",
-    "description": " \n"
-  },
-  {
-    "summary": "5:00 to 6:00 - Assistance - Grace El Khoury",
-    "start": "2025-10-14 17:00:00+03:00",
-    "end": "2025-10-14 18:00:00+03:00",
-    "location": "Fcc.205 - Serial#: 131277",
-    "description": " \n"
-  },
-  {
-    "summary": "11:45 to 1:00 - Assistance - Joy El Helou",
-    "start": "2025-10-15 11:45:00+03:00",
-    "end": "2025-10-15 13:00:00+03:00",
-    "location": "SC.607-608 - Serial#: 193682",
-    "description": " \n"
-  },
-  {
-    "summary": "4:00 to 5:00 - Assistance + Laptop + Microphone - Nicole Bou Farhat, Ext: 2534",
-    "start": "2025-10-15 16:00:00+03:00",
-    "end": "2025-10-15 17:00:00+03:00",
-    "location": "SC.607-608 - Serial#: 131453",
-    "description": " \n"
-  },
-  {
-    "summary": "4:00 to 7:00 - Assistance - Joy El Helou",
-    "start": "2025-10-15 16:00:00+03:00",
-    "end": "2025-10-15 19:00:00+03:00",
-    "location": "Eng.406 - Serial#: 193649",
-    "description": " \n"
-  },
-  {
-    "summary": "3:30 to 4:30 - Assistance - Reine Azzi, Ext: 1742",
-    "start": "2025-10-16 15:30:00+03:00",
-    "end": "2025-10-16 16:30:00+03:00",
-    "location": "Fcc.205 - Serial#: 131370",
-    "description": " \n"
-  },
-  {
-    "summary": "3:00 to 5:00 - VC Najla Atieh 1301 and Block A-710 - Chadi Abou Rjeily, Ext: 2852",
-    "start": "2025-10-20 15:00:00+03:00",
-    "end": "2025-10-20 17:00:00+03:00",
-    "location": "Serial#: 193670",
-    "description": " \n"
-  },
-  {
-    "summary": "3:00 to 4:00 - Assistance + Microphone - Jana El Moujabber, Ext: 2914",
-    "start": "2025-10-15 15:00:00+03:00",
-    "end": "2025-10-15 16:00:00+03:00",
-    "location": "Block A-710 - Serial#: 193692",
-    "description": " \n"
-  },
-  {
-    "summary": "5:00 to 7:30 - Assistance - Honors Program, Ext: 3917",
-    "start": "2025-10-14 17:00:00+03:00",
-    "end": "2025-10-14 19:30:00+03:00",
-    "location": "SC.402",
-    "description": " \n"
-  },
-  {
-    "summary": "11:15 to 12:15 - Assistance - Nagham Naim, Ext: 2232",
-    "start": "2025-10-17 11:15:00+03:00",
-    "end": "2025-10-17 12:15:00+03:00",
-    "location": "Arc.303",
-    "description": " \n"
-  },
-  {
-    "summary": "6:00 to 8:30 - Turn ON Lights - Alissar Albakht, Ext: 2320",
-    "start": "2025-10-17 18:00:00+03:00",
-    "end": "2025-10-17 20:30:00+03:00",
+    "summary": "1:00 to 2:00 - Assistance - Nagham Naim, Ext: 2232",
+    "start": "2025-10-23 13:00:00+03:00",
+    "end": "2025-10-23 14:00:00+03:00",
     "location": "Som. Auditorium",
     "description": " \n"
   },
@@ -518,108 +504,73 @@
     "description": " \n"
   },
   {
-    "summary": "1:00 to 2:00 - Assistance + Distance Learning - Nagham Naim, Ext: 2232",
-    "start": "2025-10-16 13:00:00+03:00",
-    "end": "2025-10-16 14:00:00+03:00",
-    "location": "Eng.605 and GB.403",
-    "description": " \n"
+    "summary": "General Meeting - Rana Shehab - Serial#: 197292",
+    "start": "2025-10-27 08:00:00+02:00",
+    "end": "2025-10-27 10:00:00+02:00",
+    "location": "Sc.402",
+    "description": "Assistance+laptop\n \n"
   },
   {
-    "summary": "2:00 to 3:00 - Assistance - Content will be shared from his laptop on the screen - Noel Maalouf, Ext: 2433",
-    "start": "2025-10-15 14:00:00+03:00",
-    "end": "2025-10-15 15:00:00+03:00",
-    "location": "SC.606 - Serial#: 197119",
-    "description": " \n"
+    "summary": "VEX Robotics Launching Ceremony - Noel Maalouf - SR296957",
+    "start": "2025-10-27 17:00:00+02:00",
+    "end": "2025-10-27 20:00:00+02:00",
+    "location": "CHSC Auditorium",
+    "description": "1. Setup for presentations\n2. Availability of microphones\n3. Preparation for a possible online session to accommodate remote attendees Email attached\n"
   },
   {
-    "summary": "4:00 to 4:45 - WEBEX - Rula Diab, Ext: 1294",
-    "start": "2025-10-14 16:00:00+03:00",
-    "end": "2025-10-14 16:45:00+03:00",
-    "location": "CA.406 - https://lau.webex.com/meet/provost.office",
-    "description": " \n"
+    "summary": "Send 3 Laptops to Sarraf Bldg. Exam is on Oct 27",
+    "start": "2025-10-23 08:00:00+03:00",
+    "end": "2025-10-23 10:00:00+03:00",
+    "location": "Sarraf Bldg",
+    "description": "*\tExam name: Family Medicine ITE\n*\tDate: October 27, 2025\n*\tTime: 9:00 AM – 2:00 PM\n*\tLocation: Sarraf Building\n \n"
   },
   {
-    "summary": "10:00 to 10:45 - WEBEX - Rula Diab, Ext: 1294",
-    "start": "2025-10-14 10:00:00+03:00",
-    "end": "2025-10-14 10:45:00+03:00",
-    "location": "CA.406 - https://lau.webex.com/meet/provost.office",
-    "description": " \n"
-  },
-  {
-    "summary": "8:00 to 9:00 - WEBEX - Helpdesk, Ext:1000",
-    "start": "2025-10-14 08:00:00+03:00",
-    "end": "2025-10-14 09:00:00+03:00",
-    "location": "Fcc.205",
-    "description": " \n"
-  },
-  {
-    "summary": "9:00 to 11:00 - Assistance - Rana Slaiby, Ext: 2411",
-    "start": "2025-10-14 09:00:00+03:00",
-    "end": "2025-10-14 11:00:00+03:00",
-    "location": "SC.608 - Serial#: 197166",
-    "description": " \n"
-  },
-  {
-    "summary": "1:15 to 2:00 - Assistance - Rana Slaiby - Ext: 2411",
-    "start": "2025-10-14 13:15:00+03:00",
-    "end": "2025-10-14 14:00:00+03:00",
-    "location": "Sc.608 - Serial#: 197193",
-    "description": " \n"
-  },
-  {
-    "summary": "5:45 to 9:00 - Assistance - Nour Alhouda Moubayed",
-    "start": "2025-10-14 17:45:00+03:00",
-    "end": "2025-10-14 21:00:00+03:00",
-    "location": "Sc.607 - Serial#: 197207",
-    "description": " \n"
-  },
-  {
-    "summary": "10:00 to 2:00 - Assistance + 2 Wireless Microphone  - Georgina Elias",
-    "start": "2025-10-15 10:00:00+03:00",
-    "end": "2025-10-15 14:00:00+03:00",
+    "summary": "12:00 to 1:00 - Assistance + Laptop + Wireless Microphones - Helpdesk, Ext:1000",
+    "start": "2025-10-24 12:00:00+03:00",
+    "end": "2025-10-24 13:00:00+03:00",
     "location": "Som. Auditorium",
     "description": " \n"
   },
   {
-    "summary": "2:00 to 4:00 - Assistance - IT Helpdesk",
-    "start": "2025-10-15 14:00:00+03:00",
-    "end": "2025-10-15 16:00:00+03:00",
-    "location": "Block A 811",
-    "description": " \n"
+    "summary": "Video Conference - Chadi Abou Rjeily - Serial#: 197312",
+    "start": "2025-10-27 15:00:00+02:00",
+    "end": "2025-10-27 17:00:00+02:00",
+    "location": "Sc.607-608 & Dr.Najla Atiyah 1301",
+    "description": "Assistance\n"
   },
   {
-    "summary": "4:00 to 6:00 - Assistance - Joy El Helou",
-    "start": "2025-10-15 16:00:00+03:00",
-    "end": "2025-10-15 18:00:00+03:00",
-    "location": "Fcc.205 - Serial#: 197212",
-    "description": " \n"
+    "summary": "General Meeting - Maria Abi Saad - SR297191",
+    "start": "2025-10-27 11:45:00+02:00",
+    "end": "2025-10-27 13:30:00+02:00",
+    "location": "Sc.607-608",
+    "description": " \n- microphone\n- projector\n \n \n"
   },
   {
-    "summary": "4:00 to 5:00 - Assistance + Laptop - Nissrine El Hassan - Ext: 2851",
-    "start": "2025-10-15 16:00:00+03:00",
-    "end": "2025-10-15 17:00:00+03:00",
-    "location": "Sc.606 - Serial#: 197190",
-    "description": " \n"
+    "summary": "Webex meeting - Maya Choueiry",
+    "start": "2025-10-23 09:45:00+03:00",
+    "end": "2025-10-23 10:45:00+03:00",
+    "location": "CA.406",
+    "description": "Assistance\n"
   },
   {
-    "summary": "5:45 to 8:00 - Assistance + Laptop - Nicole Bou Farhat, Ext: 2534",
-    "start": "2025-10-15 17:45:00+03:00",
-    "end": "2025-10-15 20:00:00+03:00",
-    "location": "Sc.607-608 - Serial#: 197204",
-    "description": " \n"
+    "summary": "Meeting - Alan Kairouz",
+    "start": "2025-10-20 17:30:00+03:00",
+    "end": "2025-10-20 19:00:00+03:00",
+    "location": "CHSC.5500",
+    "description": "Assistant\n"
   },
   {
-    "summary": "5:30 to 7:00 - Assistance - Alan Kairouz, Ext: 2536",
-    "start": "2025-10-16 17:30:00+03:00",
-    "end": "2025-10-16 19:00:00+03:00",
-    "location": "Sc.402 - Serial#: 197219",
-    "description": " \n"
+    "summary": "Assistance - Nagham Naim ",
+    "start": "2025-10-21 11:00:00+03:00",
+    "end": "2025-10-21 12:00:00+03:00",
+    "location": "Architecture entrance 2nd floor",
+    "description": "Nady speaker\n \n"
   },
   {
-    "summary": "2:00 to 4:00 - Assistance - Sima Tokajian, Ext: 2861",
-    "start": "2025-10-17 14:00:00+03:00",
-    "end": "2025-10-17 16:00:00+03:00",
-    "location": "Block A-710 - Serial#: 197188",
-    "description": " \n"
+    "summary": "General Meeting - Alan Kairouz - Serial#: 197323",
+    "start": "2025-10-22 14:00:00+03:00",
+    "end": "2025-10-22 15:15:00+03:00",
+    "location": "Sc.205",
+    "description": "Assistance\n \n"
   }
 ]
